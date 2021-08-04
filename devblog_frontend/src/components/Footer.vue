@@ -18,7 +18,6 @@
                 </div>
                 <div class="col-2">
                     <ul>
-                    <router-link class="link" to="#">Home</router-link>
                     <router-link class="link" to="#">Email</router-link>
                     </ul>
                 </div>

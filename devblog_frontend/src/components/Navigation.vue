@@ -6,10 +6,10 @@
             </div>
             <div class="nav-links">
                 <ul v-show="!mobile">
-                    <router-link class="link" to="#">Home</router-link>
+                    <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                     <router-link class="link" to="#">Blogs</router-link>
-                    <router-link class="link" to="#">Create Post</router-link>
-                    <router-link class="link" to="#">Login/Register</router-link>
+                    <router-link v-if="noUser" class="link" to="#">Create Post</router-link>
+                    <router-link v-if="!noUser" class="link" to="#">Login</router-link>
                 </ul>
             </div>
         </nav>
@@ -18,8 +18,8 @@
             <ul class="mobile-nav" v-show="mobileNav">
                 <router-link class="link" to="#">Home</router-link>
                 <router-link class="link" to="#">Blogs</router-link>
-                <router-link class="link" to="#">Create Post</router-link>
-                <router-link class="link" to="#">Login/Register</router-link>
+                <router-link v-if="noUser" class="link" to="#">Create Post</router-link>
+                <router-link v-if="!noUser" class="link" to="#">Login</router-link>
             </ul>
         </transition>
     </header>
@@ -37,6 +37,7 @@ export default {
             mobile: null,
             mobileNav: null,
             windowWidth:null,
+            noUser: null,
         }
     },
     created() {
@@ -82,6 +83,17 @@ header {
     nav {
         display: flex;
         padding: 25px 0;
+
+        .branding {
+            display: flex;
+            align-items: center;
+            .header {
+                font-weight: 600;
+                font-size: 24px;
+                color: #000000;
+                text-decoration: none;
+            }
+        }
 
         .nav-links {
             position: relative;

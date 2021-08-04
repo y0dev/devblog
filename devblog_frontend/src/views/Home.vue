@@ -1,16 +1,44 @@
 <template>
   <div class="home">
-    <p>This is a paragraph</p>
-    <DevLogo/>
+    <BlogPost :post="aboutMeScreen" />
+    <BlogPost :post="post" v-for="(post,index) in blogPosts" :key="index" />
+    
   </div>
 </template>
 
 <script>
-import DevLogo from "../assets/logo.png";
+//import devLogo from "../assets/logo.png";
+import BlogPost from "../components/BlogPost.vue";
 export default {
   name: "Home",
   components: {
-    DevLogo
+    BlogPost,
+  },
+  data() {
+    return {
+      aboutMeScreen: {
+        title: "About Me",
+        info: "Hi, I'm Devontae",
+        aboutMeScreen: true,
+        photo:"me",
+      },
+      blogPosts: [
+        {
+          title: "This is a Sample Title",
+          info: "Sample descrition goes here",
+          coverPhoto: "coding"
+        },
+        {
+          title: "This is a Sample Title",
+          info: "Sample descrition goes here",
+          coverPhoto: "designed-for-everyone"
+        },
+      ]
+    }
   },
 };
 </script>
+
+<style lang="sass" scoped>
+
+</style>
