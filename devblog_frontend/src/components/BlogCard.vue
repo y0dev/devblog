@@ -5,7 +5,7 @@
                 <Play class="video" />
             </div>
         </div>
-        <div class="icons">
+        <div v-show="editPost" class="icons">
             <div class="icon">
                 <Edit class="edit" />
             </div>
@@ -40,6 +40,11 @@ export default {
         Delete,
         Edit,
         Play
+    },
+    computed: {
+        editPost() {
+            return this.$store.state.editPost;
+        }
     }
 }
 </script>

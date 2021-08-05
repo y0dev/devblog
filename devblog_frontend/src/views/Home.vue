@@ -43,22 +43,13 @@ export default {
           coverPhoto: "designed-for-everyone"
         },
       ],
-      sampleBlogCards: [
-        {
-          title: "This is a Sample Title",
-          coverPhoto: "coding",
-          date: "June 17, 2021",
-          video: false
-        },
-        {
-          title: "This is a Sample Title",
-          coverPhoto: "designed-for-everyone",
-          date: "June 17, 2021",
-          video: true
-        },
-      ]
     }
   },
+  computed: {
+    sampleBlogCards() {
+      return this.$store.state.sampleBlogCards;
+    }
+  }
 };
 </script>
 
