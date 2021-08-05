@@ -6,6 +6,8 @@
                 <h2 v-else>{{post.title}}</h2>
                 <p v-if="post.aboutMeScreen">{{post.info}}</p>
                 <p class="content-preview" v-else>{{post.info}}</p>
+                
+                 <!-- <button @click="displayNextImage">SOME</button> -->
                  <router-link class="link link-light" v-if="post.aboutMeScreen" to="#">
                      Learn More<Arrow class="arrow arrow-light" />
                  </router-link>
@@ -15,8 +17,8 @@
             </div>
         </div> 
         <div class="blog-photo">
-            <img v-if="post.aboutMeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)" alt="">
-            <img v-else :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
+            <img class="photo" v-if="post.aboutMeScreen" :src="require(`../assets/blogPhotos/${post.photos[0]}.jpg`)" alt="">
+            <img class="photo"  v-else :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
         </div>       
     </div>
 </template>
@@ -28,6 +30,20 @@ export default {
     props: ["post"],
     components: {
         Arrow,
+    },
+    data() {
+        return {
+            x:-1
+        }
+    },methods: {
+        displayNextImage() {
+            let images = (this.post.aboutMeScreen) ? this.post.photos : 0;
+            this.x = (this.x === images.length - 1) ? 0 : this.x + 1;
+            let photoClass = document.getElementsByClassName("photo")[0];
+            photoClass.src = require('../assets/blogPhotos/'+ images[this.x] + '.jpg');
+        }
+    },created() {
+        setInterval(() => { this.displayNextImage() }, 10000);
     },
 }
 </script>
