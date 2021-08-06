@@ -1,10 +1,19 @@
 <template>
     <div class="blog-card-wrap">
+        <h2>Title</h2>
         <div class="blog-cards container">
             <div class="toggle-edit">
                 <span>Toggle Editing Post</span>
                 <input type="checkbox" v-model="editPost">
             </div>
+            <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
+        </div>
+        <h2>Title</h2>
+        <div class="blog-cards container section">
+            <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
+        </div>
+        <h2>Title</h2>
+        <div class="blog-cards container section">
             <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
         </div>
     </div>
@@ -82,6 +91,14 @@ export default {
             left: 52px;
         }
     }
+}
+
+h2 {
+    margin-top: 50px;
+    margin-left: 20px;
+}
+.section {
+    margin-top: 100px;
 }
 
 </style>

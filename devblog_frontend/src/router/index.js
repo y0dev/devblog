@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login.vue";
+import CreatePost from "../views/CreatePost.vue";
+import BlogPreview from "../views/BlogPreview.vue";
 
 Vue.use(VueRouter);
 
@@ -29,6 +31,22 @@ const routes = [
         component: Login,
         meta: {
             title: "Login"
+        },
+    },
+    {
+        path:"/post",
+        name: "CreatePost",
+        component: CreatePost,
+        meta: {
+            title: "CreatePost"
+        },
+    },
+    {
+        path:"/post",
+        name: "BlogPreview",
+        component: BlogPreview,
+        meta: {
+            title: "BlogPreview"
         },
     },
 ]
