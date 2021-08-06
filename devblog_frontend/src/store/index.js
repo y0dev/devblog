@@ -41,6 +41,7 @@ export default new Vuex.Store({
   mutations: {
     newBlogPost(state,payload) {
       state.blogInfo = payload;
+      //console.log(payload)
     },
     updateBlogTitle(state,payload) {
       state.blogTitle = payload;
@@ -50,6 +51,9 @@ export default new Vuex.Store({
     },
     createFileURL(state,payload) {
       state.blogPhotoFileURL = payload;
+    },
+    updateYoutubeURL(state,payload) {
+      state.blogYoutubeURL = payload;
       console.log(payload);
     },
     openPhotoPreview(state) {

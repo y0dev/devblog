@@ -80,7 +80,20 @@ export default {
             if(this.blogTitle.length != 0 && this.blogInfo.length !== 0) {
                 if(this.file) {
                     return;
-                } else if (this.uploadYoutube) {
+                } else if (this.blogInfo.includes("<iframe class=\"ql-video\"")) {
+                  const startingIdx = this.blogInfo.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
+                  const endingIdx = this.blogInfo.indexOf("?showinfo")
+                  //const info = this.blogInfo.split("")
+                  // console.log(startingIdx,endingIdx)
+                  // console.log(this.blogInfo.substring(startingIdx, endingIdx))
+
+                  
+                  const fileName = `https://img.youtube.com/vi/${this.blogInfo.substring(startingIdx, endingIdx)}/maxresdefault.jpg`;
+                  this.$store.commit("fileNameChange",fileName);
+                  this.$store.commit("createFileURL",fileName);
+                  return;
+                } 
+                else if (this.uploadYoutube) {
                     if (this.blogYoutubeURL) {
                         return;
                     }
