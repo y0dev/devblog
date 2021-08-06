@@ -13,7 +13,8 @@
                 <Delete class="delete" />
             </div>
         </div>
-        <img :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
+        <img v-if="post.video !== true" :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
+        <img v-else :src="`https://img.youtube.com/vi/${post.coverPhoto}/maxresdefault.jpg`" alt="">
         <div class="info">
             <h4>{{ post.title }}</h4>
             <h6>Posted on: {{ post.date }}</h6>

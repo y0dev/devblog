@@ -11,7 +11,7 @@ export default new Vuex.Store({
           date: "June 17, 2021", video: false
         },
         {
-          title: "This is a Sample Title", coverPhoto: "designed-for-everyone",
+          title: "This is a Sample Title", coverPhoto: "6S4LCPI9wk4",
           date: "June 17, 2021", video: true
         },
       ],
