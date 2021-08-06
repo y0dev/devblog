@@ -1,0 +1,31 @@
+{
+  "name": "devblog",
+  "version": "1.0.0",
+  "description": "This is a daily blog websites of my current reads or updates",
+  "main": "index.js",
+  "private": "true",
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  },
+  "scripts": {
+    "server": "nodemon ./api/v1/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.11.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/y0dev/devblog.git"
+  },
+  "author": "Devontae Reid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/y0dev/devblog.git/issues"
+  },
+  "homepage": "https://github.com/y0dev/devblog.git#readme"
+}
