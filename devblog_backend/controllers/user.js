@@ -1,68 +1,64 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
-const loginRequired = (req, res, next) => {
-    if (req.session.authenticated) {
-        console.log('Logged In!!!');
-        //next();
+const register = (req, res) => {
+    
+    const newUser = new User({
+        name: req.body.firstName + " " + req.body.lastName,
+        username: req.body.username,
+        email: req.body.email
+    });
+    
+    if(req.body.password.length >= 8 ) {//|| !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(req.body.password)) {
+        newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
+        User.exists({
+            username: req.body.username,
+            email: req.body.email 
+        })
+        .then(exist => {
+            if(!exist) {
+                newUser.save((err,user) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: err,
+                            message: "An error occured"
+                        });
+                    } else {
+                        return res.status(200).json({
+                            message: "User was created successfully"
+                        });
+                    }
+                });
+            } else {
+                res.json({ message: 'User with email already exist!'});
+            }
+        });
     } else {
-         console.log('Logged Out!!!');
-         res.status(401).json({ message: 'Unauthorized user!' })
+        return res.status(400).json({
+            message: "Password must be at least 8 characters"
+        });
     }
 }
 
-const register = (req, res) => {
-    const newUser = new User(req.body);
-    newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
-    User.exists({email: req.body.email })
-    .then(exist => {
-        if(!exist) {
-            newUser.save((err,user) => {
-                if (err) {
-                    return res.status(400).json({
-                        message: err
-                    });
-                } else {
-                    user.password = undefined;
-                    req.session.authenticated = true;
-                    req.session.user = {
-                        name: user.name,
-                        email: user.email,
-                        password: user.password,
-                        id: user._id,
-                    };
-                    res.locals.user = user;
-                    return res.json(req.session);
-                }
-            });
-        } else {
-            res.json({ message: 'User with email already exist!'});
-        }
-    });
-}
-
 const login = (req, res) => {
-    User.findOne({
-        email: req.body.email
+    User.findOne({ $or :[
+        {username: req.body.username},
+        {email: req.body.email}]
     }, (err, user) => {
         if (err) throw err;
         if (!user) {
             res.status(401).json({ message: 'Authentication failed. No user found.' });
         } else if (user) {
             if (!user.comparePassword(req.body.password,user.password)) {
-                res.status(401).json({ message: 'Authentication failed. Wrong password' });
+                res.status(401).json({ message: 'Authentication failed. Invalid Username/Password' });
             } else {
-                user.password = undefined;
-                req.session.authenticated = true;
-                req.session.user = {
-                    name: user.name,
-                    email: user.email,
-                    password: user.password,
-                    id: user._id,
-                };
-                res.locals.user = user;
-                return res.json(req.session);
+                let token = jwt.sign({username: user.username,name:user.name,email:user.email}, 'verySecretValue',{expiresIn: '1h'});
+                return res.json({
+                    message: "Login successful",
+                    token
+                });
             }
         }
     })
@@ -75,7 +71,6 @@ const signOut = (req,res) => {
 }
 
 module.exports = {
-    loginRequired,
     register,
     login,
     signOut

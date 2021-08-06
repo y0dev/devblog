@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
-const conn = mongoose.connect('mongodb://localhost:27017/myapp', {useNewUrlParser: true});
+const conn = mongoose.connect('mongodb://localhost:27017/devblog', {useNewUrlParser: true});
 
 const ObjectId = Schema.ObjectId;
 
@@ -10,6 +10,10 @@ const users = new Schema({
   name: {
     type: String,
     required: 'Enter a name'
+  },
+  username: {
+    type: String,
+    required: 'Enter a username'
   },
   email: {
     type: String,
