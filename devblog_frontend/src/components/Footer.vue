@@ -39,6 +39,11 @@ export default {
         twitter,
         linkedin,
         github
+    },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
     }
 }
 </script>

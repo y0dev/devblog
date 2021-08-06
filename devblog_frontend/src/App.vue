@@ -23,6 +23,9 @@ export default {
     };
   },
   created() {
+    if(this.$store.state.user) {
+      console.log("User logged in")
+    }
     this.checkRoute();
   },
   mounted() {},

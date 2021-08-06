@@ -53,10 +53,10 @@ export default {
                 })
                 .then(response => response.json() )
                 .then(data => {
-                    console.log(data);
                     if(data.token) {
                         let user = window.atob( data.token.split(".")[1] );
-                        
+                        this.$store.commit("setProfileInfo",user);
+                        this.$store.commit("setProfileInitials");
                         this.$router.push({ name: "Home" });
                         return;
                     }
