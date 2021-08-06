@@ -9,7 +9,7 @@
                     <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                     <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
                     <router-link v-if="noUser" class="link" to="#">Create Post</router-link>
-                    <router-link v-if="!noUser" class="link" to="#">Login</router-link>
+                    <router-link v-if="!noUser" class="link" :to="{ name: 'Login' }">Login</router-link>
                 </ul>
             </div>
         </nav>
@@ -19,7 +19,7 @@
                 <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                 <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
                 <router-link v-if="noUser" class="link" to="#">Create Post</router-link>
-                <router-link v-if="!noUser" class="link" to="#">Login</router-link>
+                <router-link v-if="!noUser" class="link" :to="{ name: 'Login' }">Login</router-link>
             </ul>
         </transition>
     </header>
