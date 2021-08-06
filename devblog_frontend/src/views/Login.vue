@@ -43,7 +43,29 @@ export default {
                this.password !== "") {
                 this.error = false;
                 this.errorMsg = "";
-                this.$router.push({ name: "Home" });
+                fetch("http://localhost:3600/api/login", {
+                    method: "POST",
+                    body: JSON.stringify({
+                       usernameEmail: this.usernameEmail,
+                       password: this.password
+                    }),
+                    headers: {"Content-type": "application/json; charset=UTF-8"}
+                })
+                .then(response => response.json() )
+                .then(data => {
+                    console.log(data);
+                    if(data.token) {
+                        let user = window.atob( data.token.split(".")[1] );
+                        
+                        this.$router.push({ name: "Home" });
+                        return;
+                    }
+                    this.errorMsg = "Invalid Username/Password";
+                    return;
+                });
+                
+                this.error = true;
+                this.errorMsg = "Invalid Username/Password";
                 return;
             }
             this.error = true;

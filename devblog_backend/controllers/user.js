@@ -44,8 +44,8 @@ const register = (req, res) => {
 
 const login = (req, res) => {
     User.findOne({ $or :[
-        {username: req.body.username},
-        {email: req.body.email}]
+        {username:{ $regex : new RegExp(req.body.usernameEmail, "i") }}, // This is used to be case-insensitive
+        {email: { $regex : new RegExp(req.body.usernameEmail, "i") }}]
     }, (err, user) => {
         if (err) throw err;
         if (!user) {
