@@ -17,7 +17,20 @@
             </div>
         </div> 
         <div class="blog-photo">
-            <img class="photo" v-if="post.aboutMeScreen" :src="require(`../assets/blogPhotos/${post.photos[0]}.jpg`)" alt="">
+            <Carousel  
+                v-if="post.aboutMeScreen" 
+                :per-page="1"
+                :speed="2000" :autoplayTimeout="8000"
+                :autoplay="true" :mouse-drag="false" :loop="true"> 
+                <Slide class="carousel-slide" 
+                       data-index="0">
+                    <img class="carousel-photo" :src="require(`../assets/blogPhotos/me1.jpg`)">
+                </Slide>
+                <Slide class="carousel-slide" 
+                       data-index="1">
+                    <img class="carousel-photo" :src="require(`../assets/blogPhotos/me2.jpg`)">
+                </Slide>
+            </Carousel>
             <img class="photo"  v-else :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
         </div>       
     </div>
@@ -25,26 +38,36 @@
 
 <script>
 import Arrow from "../assets/icons/arrow-right-light.svg";
+import { Carousel, Slide } from 'vue-carousel';
+// import ImageCarousel from "../components/ImageCarousel.vue";
 export default {
     name: "blogPost",
     props: ["post"],
     components: {
         Arrow,
+        Carousel,
+        Slide
     },
     data() {
         return {
-            x:-1
+            images:null,
+            timer:null,
+            currentIndex: 0
         }
     },methods: {
-        displayNextImage() {
-            let images = (this.post.aboutMeScreen) ? this.post.photos : 0;
-            this.x = (this.x === images.length - 1) ? 0 : this.x + 1;
-            let photoClass = document.getElementsByClassName("photo")[0];
-            photoClass.src = require('../assets/blogPhotos/'+ images[this.x] + '.jpg');
-        }
+
     },created() {
-        setInterval(() => { this.displayNextImage() }, 10000);
+        this.images = (this.post.aboutMeScreen) ? this.post.photos : 0;
+        //setInterval(() => { this.displayNextImage() }, 10000);
     },
+    mounted() {
+        
+    }, 
+    computed: {
+        currentImage() {
+            return this.images[Math.abs(this.currentIndex) % this.images.length];
+        }
+    }
 }
 </script>
 
@@ -144,6 +167,14 @@ export default {
           width: 100%;
           height: 100%;
           object-fit: cover;
+      }
+
+      .carousel-slide {
+          height: 50%;
+        .carousel-photo {
+            //   height: 100%;
+            object-fit: fill;
+        }
       }
   }
 }
