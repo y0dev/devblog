@@ -26,6 +26,19 @@ export default {
     components: {
         BlogCard,
     },
+    created() {
+        console.log(this.$store.state.user)
+        fetch(`http://localhost:${process.env.VUE_APP_SERVER_PORT}/api/blogs`, {
+            method: "POST",
+            body: JSON.stringify({
+                email: this.$store.state.email,
+            })
+            })
+            .then(response => response.json() )
+            .then((data) => {
+                console.log(data);
+            })
+    },
     computed: {
         sampleBlogCards() {
             return this.$store.state.sampleBlogCards;

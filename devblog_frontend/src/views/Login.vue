@@ -43,7 +43,7 @@ export default {
                this.password !== "") {
                 this.error = false;
                 this.errorMsg = "";
-                fetch("http://localhost:3600/api/login", {
+                fetch(`http://localhost:${process.env.VUE_APP_SERVER_PORT}/api/login`, {
                     method: "POST",
                     body: JSON.stringify({
                        usernameEmail: this.usernameEmail,
@@ -57,6 +57,7 @@ export default {
                         let user = window.atob( data.token.split(".")[1] );
                         this.$store.commit("setProfileInfo",user);
                         this.$store.commit("setProfileInitials");
+                        console.log(this.$store.state.email)
                         this.$router.push({ name: "Home" });
                         return;
                     }

@@ -1,7 +1,13 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const saltRounds = 10;
+
+const path = require("path");
+require("dotenv").config({
+  path: path.join(__dirname,"../../",".env")
+});
+
+const saltRounds = process.env.SALT_ROUNDS;
 
 const register = (req, res) => {
     

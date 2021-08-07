@@ -34,7 +34,6 @@ export default new Vuex.Store({
       blogPhotoName: "",
       blogPhotoFileURL: null,
       blogPhotoPreview: null,
-      blogYoutubeURL: null,
       editPost:null,
 
   },
@@ -51,10 +50,6 @@ export default new Vuex.Store({
     },
     createFileURL(state,payload) {
       state.blogPhotoFileURL = payload;
-    },
-    updateYoutubeURL(state,payload) {
-      state.blogYoutubeURL = payload;
-      console.log(payload);
     },
     openPhotoPreview(state) {
       state.blogPhotoPreview = !state.blogPhotoPreview;

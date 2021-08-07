@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');const path = require("path");
+require("dotenv").config({
+  path: path.join(__dirname,"../../",".env")
+});
 
 const Schema = mongoose.Schema;
-const conn = mongoose.connect('mongodb://localhost:27017/devblog', {useNewUrlParser: true});
+const conn = mongoose.connect(`mongodb://localhost:${process.env.DB_PORT}/${process.env.DB_NAME}`, {useNewUrlParser: true});
 
 const ObjectId = Schema.ObjectId;
 

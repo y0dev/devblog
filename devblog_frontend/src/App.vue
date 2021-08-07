@@ -28,7 +28,8 @@ export default {
     }
     this.checkRoute();
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     checkRoute() {
       if(this.$route.name === "Login") {

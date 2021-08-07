@@ -3,6 +3,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const user = require('../../routes/user');
+const blog = require('../../routes/blog');
+const path = require("path");
+require("dotenv").config({
+  path: path.join(__dirname,"../../../",".env")
+});
 
 const app = express();
 
@@ -17,8 +22,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
 
 user(app);
+blog(app);
 
-
-app.listen(3600, () => {
-  console.log(`Example app listening at http://localhost:3600`);
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Example app listening at http://localhost:${process.env.SERVER_PORT}`);
 });
