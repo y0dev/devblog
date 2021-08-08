@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrapper">
+  <div class="app-wrapper" v-if="this.$store.state.postLoaded">
     <div class="app">
       <Navigation v-show="!navigation"/>
       <router-view />
@@ -11,6 +11,8 @@
 <script>
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import { auth } from './firebase'
+
 export default {
   name: "app",
   components: {
@@ -23,10 +25,14 @@ export default {
     };
   },
   created() {
-    if(this.$store.state.user) {
-      console.log("User logged in")
-    }
+    auth.onAuthStateChanged((user) => {
+      this.$store.commit('updateUser',user);
+      if(user) {
+        this.$store.dispatch('getCurrentUser');
+      }
+    });
     this.checkRoute();
+    this.$store.dispatch("getPost");
   },
   mounted() {
   },

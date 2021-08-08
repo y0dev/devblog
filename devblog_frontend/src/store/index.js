@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { auth, usersCollection, postsCollection } from '../firebase'
 
 Vue.use(Vuex)
 
@@ -28,19 +29,30 @@ export default new Vuex.Store({
       username: null,
       email: null,
       initials: null,
+      profileId:null,
 
+      blogPosts: [],
+      postLoaded: null,
       blogInfo: "Write the blog information here...",
       blogTitle: "",
       blogPhotoName: "",
+      blogCategory: "",
       blogPhotoFileURL: null,
       blogPhotoPreview: null,
       editPost:null,
 
   },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0,2);
+    },
+    blogPostsCard(state) {
+      return state.blogPosts.slice(2,6);
+    }  
+  },
   mutations: {
     newBlogPost(state,payload) {
       state.blogInfo = payload;
-      //console.log(payload)
     },
     updateBlogTitle(state,payload) {
       state.blogTitle = payload;
@@ -57,7 +69,26 @@ export default new Vuex.Store({
     toggleEditPost(state,payload) {
         state.editPost = payload;
     },
-    setProfileInfo(state,payload) {
+    setBlogState(state, payload) {
+      state.blogTitle = payload.blogTitle;
+      state.blogInfo = payload.blogInfo;
+      state.blogCategory = payload.blogCategory;
+      state.blogPhotoFileURL = payload.blogCoverPhoto;
+      state.blogPhotoName = payload.blogCoverPhotoName;
+    },
+    filterBlogPost(state, payload) {
+      state.blogPosts = state.blogPosts.filter((post) => post.blogID !== payload);
+    },
+    updateUser(state,payload) {
+      state.user = payload;
+    },
+    setProfileInfo(state,doc) {
+      state.profileId = doc.id;
+      state.email = doc.data().email;
+      state.name = doc.data().firstName + " " + doc.data().lastName;
+      state.username = doc.data().username;
+    },
+    setProfileInfoMongoDB(state,payload) {
       let user = JSON.parse(payload);
       state.user = { 
         name: user.name,
@@ -76,6 +107,48 @@ export default new Vuex.Store({
 
   },
   actions: {
+    async getCurrentUser({ commit }) {
+      const database = await usersCollection.doc(auth.currentUser.uid);
+      const dbResults = await database.get();
+      commit("setProfileInfo",dbResults);
+      commit("setProfileInitials");
+    },
+    async getImageName({ commit }, payload) {
+      console.log('payload')
+      console.log(payload)
+      commit("fileNameChange",`./${payload.url}`);
+      commit("createFileURL",payload.url);
+    },
+    async getPost({ state }) {
+      const dataBase = await postsCollection.orderBy("date", "desc");
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogInfo: doc.data().blogInfo,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
+            blogCategory: doc.data().blogCategory,
+            youtubeId: doc.data().youtubeId,
+            youtubeImageURL: doc.data().youtubeImageURL,
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+    },
+    async updatePost({ commit, dispatch }, payload) {
+      commit("filterBlogPost", payload);
+      await dispatch("getPost");
+    },
+    async deletePost({ commit }, payload) {
+      const getPost = await postsCollection.doc(payload);
+      await getPost.delete();
+      commit("filterBlogPost", payload);
+    },
   },
   modules: {
   }

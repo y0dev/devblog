@@ -5,6 +5,10 @@ import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login.vue";
 import CreatePost from "../views/CreatePost.vue";
 import BlogPreview from "../views/BlogPreview.vue";
+import ViewBlog from "../views/ViewBlog.vue";
+import EditBlog from "../views/EditBlog.vue";
+
+import {auth} from '../firebase'
 
 Vue.use(VueRouter);
 
@@ -14,7 +18,8 @@ const routes = [
         name: "Home",
         component: Home,
         meta: {
-            title: "Home"
+            title: "Home",
+            requiresAuth: false,
         },
     },
     {
@@ -22,7 +27,8 @@ const routes = [
         name: "Blogs",
         component: Blogs,
         meta: {
-            title: "Blogs"
+            title: "Blogs",
+            requiresAuth: false,
         },
     },
     {
@@ -30,7 +36,8 @@ const routes = [
         name: "Login",
         component: Login,
         meta: {
-            title: "Login"
+            title: "Login",
+            requiresAuth: false,
         },
     },
     {
@@ -38,7 +45,9 @@ const routes = [
         name: "CreatePost",
         component: CreatePost,
         meta: {
-            title: "CreatePost"
+            title: "Create Post",
+            requiresAuth: true,
+            requiresAdmin: false,
         },
     },
     {
@@ -46,7 +55,28 @@ const routes = [
         name: "BlogPreview",
         component: BlogPreview,
         meta: {
-            title: "BlogPreview"
+            title: "Preview Blog Post",
+            requiresAuth: true,
+            requiresAdmin: true,
+        },
+    },
+    {
+        path:"/v=:blogid",
+        name: "ViewBlog",
+        component: ViewBlog,
+        meta: {
+            title: "View Blog Post",
+            requiresAuth: false,
+        },
+    },
+    {
+        path:"/edit/v=:blogid",
+        name: "EditBlog",
+        component: EditBlog,
+        meta: {
+            title: "Edit Blog Post",
+            requiresAuth: true,
+            requiresAdmin: false,
         },
     },
 ]
@@ -59,7 +89,29 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to,from,next) => {
-    document.title = `DevBlog | ${to.name}`;
+    document.title = `DevBlog | ${to.meta.title}`;
     next();
-})
+});
+
+router.beforeEach(async (to, from, next) => {
+    let user = auth.currentUser;
+    let admin = null;
+    if (user) {
+      let token = await user.getIdTokenResult();
+      admin = token.claims.admin;
+    }
+    if (to.matched.some((res) => res.meta.requiresAuth)) {
+      if (user) {
+        if (to.matched.some((res) => res.meta.requiresAdmin)) {
+          if (admin) {
+            return next();
+          }
+          return next({ name: "Home" });
+        }
+        return next();
+      }
+      return next({ name: "Home" });
+    }
+    return next();
+});
 export default router;

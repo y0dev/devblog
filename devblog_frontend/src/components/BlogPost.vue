@@ -3,13 +3,13 @@
         <div class="blog-content">
             <div>
                 <h2 v-if="post.aboutMeScreen">{{post.title}}</h2>
-                <h2 v-else>{{post.title}}</h2>
+                <h2 v-else>{{post.blogTitle}}</h2>
                 <p v-if="post.aboutMeScreen">{{post.info}}</p>
-                <p class="content-preview" v-else>{{post.info}}</p>
+                <p class="content-preview" v-else v-html="post.blogInfo"></p>
                  <router-link class="link link-light" v-if="post.aboutMeScreen" to="#">
                      Learn More<Arrow class="arrow arrow-light" />
                  </router-link>
-                 <router-link class="link" v-else to="#">
+                 <router-link class="link" v-else :to="{ name: 'ViewBlog', params: { blogid: this.post.blogID } }">
                      View The Post<Arrow class="arrow" />
                  </router-link>
             </div>
@@ -48,7 +48,10 @@
                     <span class="dot" @click="currentSlide(3)"></span> 
                 </div>
             </div>
-            <img class="photo"  v-else :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
+            <div v-else :src="post.blogCoverPhoto" class="post-img">
+                <img class="photo" v-if="post.youtubeId !== ''" :src="post.youtubeImageURL" alt="">
+                <img class="photo" v-else :src="post.blogCoverPhoto" alt="">
+            </div>
         </div>       
     </div>
 </template>
@@ -94,7 +97,7 @@ export default {
         }
     },created() {
 
-        
+        console.log(this.post)
         this.images = (this.post.aboutMeScreen) ? this.post.photos : 0;
         //setInterval(() => { this.displayNextImage() }, 10000);
     },

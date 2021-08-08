@@ -1,63 +1,70 @@
 <template>
-    <div class="create-post">
-        <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
-        <div class="container">
-            <div :class="{invisible:!error }" class="err-message">
-                <p><span>Error: </span>{{ this.errorMsg }}</p>
+  <div class="create-post">
+    <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+    <Loading v-show="loading" />
+    <div class="container">
+        <div :class="{invisible:!error }" class="err-message">
+            <p><span>Error: </span>{{ this.errorMsg }}</p>
+        </div>
+        <div class="blog-info">
+            <input type="text" placeholder="Enter Title" v-model="blogTitle">
+            <div class="upload-file">
+                <label class="photo-label" for="blog-photo">Upload Cover Photo</label>
+                <input type="file" name="blogPhoto" id="blog-photo" ref="blogPhoto" @change="fileChanged" accept=".png, .jpg, .jpeg"/>
+                <button class="preview" :class="{'button-inactive': !this.$store.state.blogPhotoFileURL}" @click="openPreview">Preview Photo</button>
+                <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
             </div>
-            <div class="blog-info">
-                <input type="text" placeholder="Enter Title" v-model="blogTitle">
-                <div class="upload-file">
-                    <label class="photo-label" for="blog-photo">Upload Cover Photo</label>
-                    <input type="file" name="blogPhoto" id="blog-photo" ref="blogPhoto" @change="fileChanged" accept=".png, .jpg, .jpeg"/>
-                    <button class="preview" :class="{'button-inactive': !this.$store.state.blogPhotoFileURL}" @click="openPreview">Preview Photo</button>
-                    <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
-                </div>
-                <!-- <div class="toggle-switch">
-                    <span>Add Youtube Video</span>
-                    <input type="checkbox" v-model="uploadYoutube">
-                </div> -->
-            </div>
-            <!-- <div v-show="uploadYoutube" class="url-container">
-                <label class="url-label" for="url">Enter an https:// URL:</label>
-                <input type="url" name="url" id="url"
-                    placeholder="https://example.com"
-                    pattern="https://.*" size="30"
-                    v-model="blogYoutubeURL"
-                    required>
+            <!-- <div class="toggle-switch">
+                <span>Add Youtube Video</span>
+                <input type="checkbox" v-model="uploadYoutube">
             </div> -->
-            <div class="editor">
-                <vue-editor :editorOptions="editorSettings" v-model="blogInfo" useCustomImageHandler @image-added="imageHandler" @text-change="textHandler" />
-            </div>
-            <div class="blog-actions">
-                <button @click="uploadBlog">Publish Blog</button>
-                <router-link class="router-button" :to="{name: 'BlogPreview'}" >Post Preview</router-link>
-            </div>
+        </div>
+        <!-- <div v-show="uploadYoutube" class="url-container">
+            <label class="url-label" for="url">Enter an https:// URL:</label>
+            <input type="url" name="url" id="url"
+                placeholder="https://example.com"
+                pattern="https://.*" size="30"
+                v-model="blogYoutubeURL"
+                required>
+        </div> -->
+        <div class="editor">
+            <vue-editor :editorOptions="editorSettings" v-model="blogInfo" useCustomImageHandler @image-added="imageHandler" @text-change="textHandler" />
+        </div>
+        <div class="blog-actions">
+            <button @click="uploadBlog">Publish Blog</button>
+            <router-link class="router-button" :to="{name: 'BlogPreview'}" >Post Preview</router-link>
         </div>
     </div>
+  </div>
 </template>
 
 <script>
-import BlogCoverPreview from "../components/BlogCoverPreview.vue";
+import BlogCoverPreview from "../components/BlogCoverPreview";
+import Loading from "../components/Loading";
 import Quill from "quill";
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
 const VideoResize = require("quill-video-resize-module").default;
 Quill.register("modules/ImageResize", ImageResize);
 Quill.register("modules/VideoResize", VideoResize);
+
+import { storage,postsCollection } from '../firebase';
 export default {
     name:"CreatePost",
     components: {
         BlogCoverPreview,
+        Loading,
     },
     data() {
         return {
             error: null,
             errorMsg: null,
+            loading: null,
             file: null,
             uploadYoutube:null,
             blogYoutubeURL: null,
             youtubeId:null,
+            
             editorSettings: {
                 modules: {
                     ImageResize: {},
@@ -89,20 +96,38 @@ export default {
             this.$store.commit("openPhotoPreview");
         },
         imageHandler(file,Editor,cursorLocation,resetUploader) {
-            console.log(file,Editor,cursorLocation,resetUploader);
-            //Editor.insertEmbed(cursorLocation,"image",downloadURL);
-            //resetUploader();
+            const storageRef = storage.ref();
+            const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
+            docRef.put(file).on(
+              "state_changed",
+              (snapshot) => {
+                console.log(snapshot);
+              },
+              (err) => {
+                console.log(err);
+              },
+              async () => {
+                const downloadURL = await docRef.getDownloadURL();
+                Editor.insertEmbed(cursorLocation, "image", downloadURL);
+                resetUploader();
+              }
+            );
         },
         textHandler(delta, oldDelta, source) {
           if(source) {
             const text = this.blogInfo;
+            console.log(this.blogInfo);
             if(text.includes("youtube.com/embed")) {
-              const startingIdx = this.blogInfo.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
-              const endingIdx = this.blogInfo.indexOf("?showinfo")
-              
-              const videoId = this.blogInfo.substring(startingIdx, endingIdx);
 
-              fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_YOUTUBE_API_KEY}&part=snippet&id=${videoId}`, {
+
+              const startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
+              const endingIdx = text.indexOf("?showinfo")
+              
+              const videoId = text.substring(startingIdx, endingIdx);
+              console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
+              console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
+              //https://www.youtube.com/watch?v=KpEXNP48rgA
+              fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`, {
                 method: "GET",
                 headers: {"Content-type": "application/json; charset=UTF-8"}
               })
@@ -111,18 +136,89 @@ export default {
                 const item0 = data.items[0];
                 const snippet = item0.snippet;
                 this.file = snippet.thumbnails.maxres.url
-                this.$store.commit("fileNameChange",snippet.title);
-                this.$store.commit("createFileURL",this.file);
+                this.youtubeId = videoId;
+                console.log(snippet)
+                let payload = {
+                  url: `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg`,
+                  youtubeId: this.youtubeId
+                }
+                this.$store.dispatch('getImageName',payload);
                 //this.$store.commit("blogYoutubeURL",snippet.thumbnails.maxres.url);
                 console.log(data);
+              }).catch((err) => {
+                console.log(err)
+                
+                this.file = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+                this.youtubeId = videoId
+                let payload = {
+                  url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                  youtubeId: this.youtubeId
+                }
+                this.$store.dispatch('getImageName',payload);
               });
             }
-            console.log(text);
           }
-            //Editor.insertEmbed(cursorLocation,"image",downloadURL);
-            //resetUploader();
         },
-        uploadBlog() {
+        uploadBlog(){
+          if(this.blogTitle.length != 0 && this.blogInfo.length !== 0) {
+            if (this.file) {
+
+              if(this.blogInfo.includes("<iframe")) {
+                String.prototype.splice = function(idx, rem, str) {
+                  return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+                };
+                const iframeStartingIdx = this.blogInfo.indexOf("<iframe") + "<iframe ".length;
+                this.blogInfo = this.blogInfo.splice(iframeStartingIdx,0,'width="950" height="500"')
+              }
+
+              this.loading = true;
+              const storageRef = storage.ref();
+              const docRef = storageRef.child(`documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`);
+
+              docRef.put(this.file).on(
+                "state_changed",
+                (snapshot) => {
+                  console.log(snapshot);
+                },
+                (err) => {
+                  console.log(err);
+                  this.loading = false;
+                },
+                 async () => {
+                  const downloadURL = await docRef.getDownloadURL();
+                  const timestamp = await Date.now();
+                  const dataBase = await postsCollection.doc();
+                  await dataBase.set({
+                    blogID: dataBase.id,
+                    blogInfo: this.blogInfo,
+                    blogCoverPhoto: (this.youtubeId) ? '' : downloadURL,
+                    blogCoverPhotoName: this.blogCoverPhotoName,
+                    blogTitle: this.blogTitle,
+                    profileId: this.profileId,
+                    youtubeId: (this.youtubeId) ? this.youtubeId: '',
+                    blogCategory: '',
+                    youtubeImageURL: (this.youtubeId) ? `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg` : '',
+                    date: timestamp,
+                  });
+                  await this.$store.dispatch("getPost");
+                  this.loading = false;
+                  this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+                });
+              return;
+            }
+            this.error = true;
+            this.errorMsg = "Please ensure that you uploaded a cover photo!";
+            setTimeout(() => {
+                this.error = false;
+            },5000);
+          }
+          this.error = true;
+          this.errorMsg = "Please ensure that Title and Post have been filled!";
+          setTimeout(() => {
+              this.error = false;
+          },5000);
+        },
+        uploadBlogMongoDB() {
             if(this.blogTitle.length != 0 && this.blogInfo.length !== 0) {
                 if(this.file) {
                   fetch(`http://localhost:${process.env.VUE_APP_SERVER_PORT}/api/create`, {
@@ -185,26 +281,28 @@ export default {
         }
     },
     computed: {
-        blogCoverPhotoName() {
-            return this.$store.state.blogPhotoName;
-        },
-
-        blogTitle: {
-            get() {
-                return this.$store.state.blogTitle;
-            },
-            set(payload) {
-                this.$store.commit("updateBlogTitle",payload);
-            }
-        },
-        blogInfo: {
-            get() {
-                return this.$store.state.blogInfo;
-            },
-            set(payload) {
-                this.$store.commit("newBlogPost",payload);
-            }
-        }
+      profileId() {
+        return this.$store.state.profileId;
+      },
+      blogCoverPhotoName() {
+          return this.$store.state.blogPhotoName;
+      },
+      blogTitle: {
+          get() {
+              return this.$store.state.blogTitle;
+          },
+          set(payload) {
+              this.$store.commit("updateBlogTitle",payload);
+          }
+      },
+      blogInfo: {
+          get() {
+              return this.$store.state.blogInfo;
+          },
+          set(payload) {
+              this.$store.commit("newBlogPost",payload);
+          }
+      }
     }
 }
 </script>

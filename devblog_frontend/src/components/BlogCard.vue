@@ -1,27 +1,24 @@
 <template>
     <div class="blog-card">
         <div class="category-icons">
-            <div v-show="post.video === true" class="icon">
+            <div v-show="post.youtubeId !== ''" class="icon">
                 <Play class="video" />
             </div>
         </div>
         <div v-show="editPost" class="icons">
-            <div class="icon">
+            <div @click="editBlog" class="icon">
                 <Edit class="edit" />
             </div>
-            <div class="icon">
+            <div @click="deletePost" class="icon">
                 <Delete class="delete" />
             </div>
         </div>
-        <img v-if="post.video !== true" :src="require(`../assets/blogPhotos/${post.coverPhoto}.jpg`)" alt="">
-        <img v-else :src="`https://img.youtube.com/vi/${post.coverPhoto}/maxresdefault.jpg`" alt="">
+        <img v-if="post.youtubeId !== ''" :src="post.youtubeImageURL" alt="">
+        <img v-else :src="post.blogCoverPhoto" alt="">
         <div class="info">
-            <h4>{{ post.title }}</h4>
-            <h6>Posted on: {{ post.date }}</h6>
-            <router-link v-if="post.video !== true" class="link" to="#">
-                View The Post <Arrow class="arrow" />
-            </router-link>
-            <router-link v-else class="link" to="#">
+            <h4>{{ post.blogTitle }}</h4>
+            <h6>Posted on: {{ new Date(post.blogDate).toLocaleString('en-us', { dateStyle: 'long'}) }}</h6>
+            <router-link class="link" :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }">
                 View The Video <Arrow class="arrow" />
             </router-link>
         </div>
@@ -41,12 +38,22 @@ export default {
         Delete,
         Edit,
         Play
+    },created() {
+        console.log(this.post)
+    },
+    methods: {
+        deletePost() {
+            this.$store.dispatch("deletePost", this.post.blogID);
+        },
+        editBlog() {
+            this.$router.push({ name: "EditBlog", params: { blogid: this.post.blogID } });
+        },
     },
     computed: {
         editPost() {
             return this.$store.state.editPost;
-        }
-    }
+        },
+    },
 }
 </script>
 

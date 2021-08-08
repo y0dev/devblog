@@ -4,7 +4,7 @@
             <h2>Login to DevBlog</h2>
             <div class="inputs">
                 <div class="input">
-                    <input type="text" placeholder="Email or Username" v-model="usernameEmail">
+                    <input type="text" placeholder="Email" v-model="usernameEmail">
                     <email class="icon"/>
                 </div>
                 <div class="input">
@@ -23,6 +23,8 @@
 <script>
 import email from "../assets/icons/envelope-regular.svg";
 import password from "../assets/icons/lock-alt-solid.svg";
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
     name: "Login",
     components: {
@@ -39,6 +41,21 @@ export default {
     },
     methods: {
         login() {
+              firebase
+                .auth()
+                .signInWithEmailAndPassword(this.usernameEmail, this.password)
+                .then(() => {
+                    this.$router.push({ name: "Home" });
+                    this.error = false;
+                    this.errorMsg = "";
+                    console.log(firebase.auth().currentUser.uid);
+                })
+                .catch((err) => {
+                this.error = true;
+                this.errorMsg = err.message;
+                });
+        },
+        loginMongoDB() {
             if(this.usernameEmail !== "" &&
                this.password !== "") {
                 this.error = false;

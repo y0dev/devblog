@@ -6,15 +6,15 @@
                 <span>Toggle Editing Post</span>
                 <input type="checkbox" v-model="editPost">
             </div>
-            <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
+            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
         </div>
         <h2>Title</h2>
         <div class="blog-cards container section">
-            <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
+            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
         </div>
         <h2>Title</h2>
         <div class="blog-cards container section">
-            <BlogCard :post="post" v-for="(post,index) in sampleBlogCards" :key="index" />
+            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
         </div>
     </div>
 </template>
@@ -40,17 +40,17 @@ export default {
             })
     },
     computed: {
-        sampleBlogCards() {
-            return this.$store.state.sampleBlogCards;
+        blogPosts() {
+            return this.$store.state.blogPosts;
         },
         editPost: {
             get() {
-                return this.$store.state.editPost
+                return this.$store.state.editPost;
             },
             set(payload) {
-                this.$store.commit("toggleEditPost",payload)
-            }
-        }
+                this.$store.commit("toggleEditPost", payload);
+            },
+        },
     },beforeDestroy() {
         this.$store.commit("toggleEditPost",false);
     },

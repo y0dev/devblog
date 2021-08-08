@@ -29,11 +29,9 @@
                                     <p>Profile</p>
                                 </router-link>
                             </div>
-                            <div class="option">
-                                <router-link class="option" @click="signOut">
-                                    <signOutIcon class="icon"/>
-                                    <p>Sign Out</p>
-                                </router-link>
+                            <div @click="signOut" class="option">
+                                <signOutIcon class="icon" />
+                                <p>Sign Out</p>
                             </div>
                         </div>
                     </div>
@@ -56,6 +54,7 @@
 import menuIcon from "../assets/icons/bars-regular.svg";
 import userIcon from "../assets/icons/user-alt-light.svg";
 import signOutIcon from "../assets/icons/sign-out-alt-regular.svg";
+import {auth} from '../firebase'
 export default {
     name:"navigation",
     components: {
@@ -96,6 +95,7 @@ export default {
             }
         },
         signOut() {
+            auth.signOut();
             window.location.reload();
         }
     },
