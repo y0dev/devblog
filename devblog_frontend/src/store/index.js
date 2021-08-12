@@ -46,7 +46,7 @@ export default new Vuex.Store({
     blogPostsFeed(state) {
       return state.blogPosts.slice(0,2);
     },
-    blogPostsCard(state) {
+    blogPostsCards(state) {
       return state.blogPosts.slice(2,6);
     }  
   },

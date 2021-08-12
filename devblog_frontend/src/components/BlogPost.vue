@@ -16,7 +16,7 @@
         </div> 
         <div class="blog-photo">
             <div v-if="post.aboutMeScreen" class="slideshow">
-                <div v-if="post.aboutMeScreen" class="slideshow-container">
+                <div class="slideshow-container">
 
                     <div class="mySlides fade">
                         <div class="numbertext">1 / 3</div>
@@ -28,12 +28,6 @@
                         <div class="numbertext">2 / 3</div>
                         <img :src="require(`../assets/blogPhotos/me2.jpg`)" style="width:100%">
                         <div class="text">Caption Two</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext">3 / 3</div>
-                        <img :src="require(`../assets/blogPhotos/me1.jpg`)" style="width:100%">
-                        <div class="text">Caption Three</div>
                     </div>
 
                     <a class="prev" @click="plusSlides(-1)">&#10094;</a>
@@ -196,6 +190,7 @@ export default {
   }
 
   .blog-photo {
+      
       order: 1;
       flex: 3;
       box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.6);
@@ -217,7 +212,12 @@ export default {
         .slideshow-container {
             position: relative;
             margin: auto;
-            .mySlides {display: none}
+            .mySlides {
+                position: relative;
+                display: none;
+                width: 100%;
+                height: 100%;
+            }
             img {vertical-align: middle;}
             @media(min-width: 700px) {
                 min-width: 600px;

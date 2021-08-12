@@ -10,7 +10,7 @@
         <input type="text" placeholder="Enter Blog Title" v-model="blogTitle" />
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
-          <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
+          <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChanged" accept=".png, .jpg, .jpeg" />
           <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
             Preview Photo
           </button>
@@ -37,6 +37,7 @@ const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 
 import { storage, postsCollection } from '../firebase'
+import { getImages } from '../helpers';
 export default {
   name: "CreatePost",
   data() {
@@ -72,7 +73,7 @@ export default {
     this.$store.commit("setBlogState", this.currentBlog[0]);
   },
   methods: {
-    fileChange() {
+        fileChanged() {
       this.file = this.$refs.blogPhoto.files[0];
       const fileName = this.file.name;
       this.$store.commit("fileNameChange", fileName);
@@ -105,17 +106,15 @@ export default {
     textHandler(delta, oldDelta, source) {
           if(source) {
             const text = this.blogInfo;
-            console.log(this.blogInfo);
+            
             if(text.includes("youtube.com/embed")) {
 
 
-              const startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
-              const endingIdx = text.indexOf("?showinfo")
+              let startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
+              let endingIdx = text.indexOf("?showinfo")
               
               const videoId = text.substring(startingIdx, endingIdx);
-              console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
-              console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
-              //https://www.youtube.com/watch?v=KpEXNP48rgA
+              
               fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`, {
                 method: "GET",
                 headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -124,7 +123,8 @@ export default {
               .then(data => { 
                 const item0 = data.items[0];
                 const snippet = item0.snippet;
-                this.file = snippet.thumbnails.maxres.url
+                let images = getImages(snippet.thumbnails);
+                this.file = images[images.length - 1]
                 this.youtubeId = videoId;
                 console.log(snippet)
                 let payload = {
@@ -137,10 +137,10 @@ export default {
               }).catch((err) => {
                 console.log(err)
                 
-                this.file = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+                this.file = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
                 this.youtubeId = videoId
                 let payload = {
-                  url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                  url: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
                   youtubeId: this.youtubeId
                 }
                 this.$store.dispatch('getImageName',payload);
@@ -194,7 +194,7 @@ export default {
         return;
       }
       this.error = true;
-      this.errorMsg = "Please ensure Blog Title & Blog Post has been filled!";
+            this.errorMsg = "Please ensure that Title and Post have been filled!";
       setTimeout(() => {
         this.error = false;
       }, 5000);
@@ -228,7 +228,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .create-post {
   position: relative;
   height: 100%;

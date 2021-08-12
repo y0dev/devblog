@@ -48,7 +48,8 @@ const VideoResize = require("quill-video-resize-module").default;
 Quill.register("modules/ImageResize", ImageResize);
 Quill.register("modules/VideoResize", VideoResize);
 
-import { storage,postsCollection } from '../firebase';
+import { storage, postsCollection } from '../firebase'
+import { getImages } from '../helpers';
 export default {
     name:"CreatePost",
     components: {
@@ -87,13 +88,13 @@ export default {
     },
     methods: {
         fileChanged() {
-            this.file = this.$refs.blogPhoto.files[0];
-            const fileName = this.file.name;
-            this.$store.commit("fileNameChange",fileName);
-            this.$store.commit("createFileURL",URL.createObjectURL(this.file));
+          this.file = this.$refs.blogPhoto.files[0];
+          const fileName = this.file.name;
+          this.$store.commit("fileNameChange",fileName);
+          this.$store.commit("createFileURL",URL.createObjectURL(this.file));
         },
         openPreview() {
-            this.$store.commit("openPhotoPreview");
+          this.$store.commit("openPhotoPreview");
         },
         imageHandler(file,Editor,cursorLocation,resetUploader) {
             const storageRef = storage.ref();
@@ -116,16 +117,18 @@ export default {
         textHandler(delta, oldDelta, source) {
           if(source) {
             const text = this.blogInfo;
-            console.log(this.blogInfo);
+            
             if(text.includes("youtube.com/embed")) {
 
 
-              const startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
-              const endingIdx = text.indexOf("?showinfo")
+              let startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
+              let endingIdx = text.indexOf("?showinfo")
               
               const videoId = text.substring(startingIdx, endingIdx);
-              console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
-              console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
+
+              
+              // console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
+              // console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
               //https://www.youtube.com/watch?v=KpEXNP48rgA
               fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`, {
                 method: "GET",
@@ -133,13 +136,16 @@ export default {
               })
               .then(response => response.json() )
               .then(data => { 
+                
                 const item0 = data.items[0];
                 const snippet = item0.snippet;
-                this.file = snippet.thumbnails.maxres.url
+                let images = getImages(snippet.thumbnails);
+                this.file = images[images.length - 1]
                 this.youtubeId = videoId;
+                console.log(`Umm`)
                 console.log(snippet)
                 let payload = {
-                  url: `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg`,
+                  url: images[images.length - 1],
                   youtubeId: this.youtubeId
                 }
                 this.$store.dispatch('getImageName',payload);
@@ -148,10 +154,10 @@ export default {
               }).catch((err) => {
                 console.log(err)
                 
-                this.file = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+                this.file = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
                 this.youtubeId = videoId
                 let payload = {
-                  url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                  url: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
                   youtubeId: this.youtubeId
                 }
                 this.$store.dispatch('getImageName',payload);
@@ -162,13 +168,14 @@ export default {
         uploadBlog(){
           if(this.blogTitle.length != 0 && this.blogInfo.length !== 0) {
             if (this.file) {
+              let text = this.blogInfo;
+              if(text.includes("<iframe")) {
+                let startingIdx = text.indexOf("<iframe");
+                let endingIdx = text.indexOf("</iframe>") + "</iframe>".length
+                let iframe = text.substring(startingIdx, endingIdx);
 
-              if(this.blogInfo.includes("<iframe")) {
-                String.prototype.splice = function(idx, rem, str) {
-                  return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
-                };
-                const iframeStartingIdx = this.blogInfo.indexOf("<iframe") + "<iframe ".length;
-                this.blogInfo = this.blogInfo.splice(iframeStartingIdx,0,'width="950" height="500"')
+                const wrapped = '<div src="video-view">\n\t' + iframe + '\n</div>\n';
+                text = text.replace(iframe, wrapped);
               }
 
               this.loading = true;
@@ -190,7 +197,7 @@ export default {
                   const dataBase = await postsCollection.doc();
                   await dataBase.set({
                     blogID: dataBase.id,
-                    blogInfo: this.blogInfo,
+                    blogInfo: text,
                     blogCoverPhoto: (this.youtubeId) ? '' : downloadURL,
                     blogCoverPhotoName: this.blogCoverPhotoName,
                     blogTitle: this.blogTitle,

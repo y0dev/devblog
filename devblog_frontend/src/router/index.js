@@ -57,7 +57,7 @@ const routes = [
         meta: {
             title: "Preview Blog Post",
             requiresAuth: true,
-            requiresAdmin: true,
+            requiresAdmin: false,
         },
     },
     {
