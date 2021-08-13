@@ -28,7 +28,7 @@
         </div>
         <div class="blog-actions">
             <button @click="uploadBlog">Publish Blog</button>
-            <router-link class="router-button" :to="{name: 'BlogPreview'}" >Post Preview</router-link>
+            <button @click="previewPost">Post Preview</button>
         </div>
     </div>
   </div>
@@ -40,12 +40,10 @@ import Loading from "../components/Loading";
 import Quill from "quill";
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
-const VideoResize = require("quill-video-resize-module").default;
 Quill.register("modules/ImageResize", ImageResize);
-Quill.register("modules/VideoResize", VideoResize);
 
 import { storage, postsCollection } from '../firebase'
-import { getImages } from '../helpers';
+import { getImages, getVideoId_YT, wrapVideo } from '../helpers';
 export default {
     name:"CreatePost",
     components: {
@@ -63,13 +61,6 @@ export default {
       editorSettings: {
         modules: {
             ImageResize: {},
-            VideoResize: {
-                toolbarStyles: {
-                    backgroundColor: 'black',
-                    border: 'none',
-                   // other camelCase styles for size display
-                },
-             },
             toolbar: [
                 ["bold", "italic", "underline"],
                 [{ list: "ordered" }, { list: "bullet" }],
@@ -86,6 +77,11 @@ export default {
           const fileName = this.file.name;
           this.$store.commit("fileNameChange",fileName);
           this.$store.commit("createFileURL",URL.createObjectURL(this.file));
+        },
+        previewPost() {
+          
+          this.blogInfo = wrapVideo(this.blogInfo);
+          this.$router.push({ name: "BlogPreview" });
         },
         openPreview() {
           this.$store.commit("openPhotoPreview");
@@ -115,16 +111,12 @@ export default {
             if(text.includes("youtube.com/embed")) {
 
 
-              let startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
-              let endingIdx = text.indexOf("?showinfo")
-              
-              const videoId = text.substring(startingIdx, endingIdx);
-
+              this.youtubeId = getVideoId_YT(text)
               
               // console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
               // console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
               //https://www.youtube.com/watch?v=KpEXNP48rgA
-              fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`, {
+              fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${this.youtubeId}`, {
                 method: "GET",
                 headers: {"Content-type": "application/json; charset=UTF-8"}
               })
@@ -135,23 +127,21 @@ export default {
                 const snippet = item0.snippet;
                 let images = getImages(snippet.thumbnails);
                 this.file = images[images.length - 1]
-                this.youtubeId = videoId;
                 let payload = {
-                  url: images[images.length - 1],
+                  url: this.file,
                   youtubeId: this.youtubeId
                 }
-                this.$store.dispatch('getImageName',payload);
+                this.$store.dispatch('getImageNameYoutube',payload);
                 console.log(data);
               }).catch((err) => {
                 console.log(err)
                 
-                this.file = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-                this.youtubeId = videoId
+                this.file = `https://i.ytimg.com/vi/${this.youtubeId}/hqdefault.jpg`
                 let payload = {
-                  url: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+                  url: this.file,
                   youtubeId: this.youtubeId
                 }
-                this.$store.dispatch('getImageName',payload);
+                this.$store.dispatch('getImageNameYoutube',payload);
               });
             }
           }
@@ -159,15 +149,7 @@ export default {
         uploadBlog(){
           if(this.blogTitle.length != 0 && this.blogInfo.length !== 0 && this.category) {
             if (this.file) {
-              let text = this.blogInfo;
-              if(text.includes("<iframe")) {
-                let startingIdx = text.indexOf("<iframe");
-                let endingIdx = text.indexOf("</iframe>") + "</iframe>".length
-                let iframe = text.substring(startingIdx, endingIdx);
-
-                const wrapped = '<div src="video-view">\n\t' + iframe + '\n</div>\n';
-                text = text.replace(iframe, wrapped);
-              }
+              let text = wrapVideo(this.blogInfo);
 
               this.loading = true;
               const storageRef = storage.ref();
@@ -191,8 +173,8 @@ export default {
                     blogTitle: this.blogTitle,
                     blogInfo: text,
                     blogCategory: this.category,
-                    blogCoverPhoto: (this.youtubeId) ?  `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg` : downloadURL,
-                    blogCoverPhotoName: this.blogCoverPhotoName,
+                    blogCoverPhoto: (this.youtubeId) ?  this.file : downloadURL,
+                    blogCoverPhotoName:  this.blogCoverPhotoName,
                     profileId: this.profileId,
                     youtubeId: (this.youtubeId) ? this.youtubeId: '',
                     date: timestamp,

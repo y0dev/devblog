@@ -9,35 +9,32 @@
 </template>
 
 <script>
+import { unwrapVideo } from '../helpers';
 export default {
   name: "PostPreview",
   data() {
     return {
-      blogInfo: null
     }
+  },mounted() {
+    
+    console.log(this.$store.state.blogInfo)
+  },
+  destroyed() {
+    console.log(this.$store.state.blogInfo)
+    unwrapVideo(this.$store.state.blogInfo)
   },
   computed: {
     blogTitle() {
       return this.$store.state.blogTitle;
     },
-    blogHTML() {
-      return this.$store.state.blogHTML;
+    blogInfo() {
+      return this.$store.state.blogInfo;
     },
     blogCoverPhoto() {
       return this.$store.state.blogPhotoFileURL;
     },
   },
   updated() {
-    let text = this.blogHTML;
-    console.log(text)
-    if(text.includes("<iframe")) {
-      let startingIdx = text.indexOf("<iframe");
-      let endingIdx = text.indexOf("</iframe>") + "</iframe>".length
-      let iframe = text.substring(startingIdx, endingIdx);
-      console.log(iframe)
-      const wrapped = '<div src="video-view">\n\t' + iframe + '\n</div>\n';
-      this.blogHTML = text.replace(iframe, wrapped);
-    }
   },
 };
 </script>

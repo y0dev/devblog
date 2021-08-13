@@ -116,10 +116,8 @@ export default new Vuex.Store({
       commit("setProfileInfo",dbResults);
       commit("setProfileInitials");
     },
-    async getImageName({ commit }, payload) {
-      console.log('payload')
-      console.log(payload)
-      commit("fileNameChange",`./${payload.url}`);
+    async getImageNameYoutube({ commit }, payload) {
+      commit("fileNameChange",`youtube_${payload.youtubeId}.jpg`);
       commit("createFileURL",payload.url);
     },
     async getPost({ state }) {

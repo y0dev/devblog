@@ -19,8 +19,6 @@ export default {
   },
   async mounted() {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
-        
-        console.log(post)
       return post.blogID === this.$route.params.blogid;
     });
   },
