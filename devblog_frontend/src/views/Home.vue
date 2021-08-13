@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BlogPost :post="aboutMeScreen" />
+    <BlogPost :post="aboutMePost" />
     <BlogPost :post="post" v-for="(post,index) in blogPostsFeed" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
@@ -46,6 +46,9 @@ export default {
     }
   },
   computed: {
+    aboutMePost() {
+      return this.$store.getters.aboutMePost;
+    },
     blogPostsFeed() {
       return this.$store.getters.blogPostsFeed;
     },

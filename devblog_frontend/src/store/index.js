@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth, usersCollection, postsCollection } from '../firebase'
+import { auth, aboutMeCollection, usersCollection, postsCollection } from '../firebase'
 
 Vue.use(Vuex)
 
@@ -31,6 +31,7 @@ export default new Vuex.Store({
       initials: null,
       profileId:null,
 
+      aboutMe: [],
       blogPosts: [],
       faithBlogPosts: [],
       sportsBlogPosts: [],
@@ -46,6 +47,9 @@ export default new Vuex.Store({
 
   },
   getters: {
+    aboutMePost(state) {
+      return state.aboutMe[0];
+    },
     blogPostsFeed(state) {
       return state.blogPosts.slice(0,2);
     },
@@ -119,6 +123,17 @@ export default new Vuex.Store({
     async getImageNameYoutube({ commit }, payload) {
       commit("fileNameChange",`youtube_${payload.youtubeId}.jpg`);
       commit("createFileURL",payload.url);
+    },
+    async getAboutMe({ state }) {
+      const dbResults = await aboutMeCollection.get();
+      dbResults.forEach((doc) => {
+        const data = {
+          title: doc.data().title,
+          info: doc.data().info,
+          photos: doc.data().photos,
+        };
+        state.aboutMe.push(data);
+      });
     },
     async getPost({ state }) {
       const dataBase = await postsCollection.orderBy("date", "desc");
