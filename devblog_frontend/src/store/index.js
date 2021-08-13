@@ -32,6 +32,9 @@ export default new Vuex.Store({
       profileId:null,
 
       blogPosts: [],
+      faithBlogPosts: [],
+      sportsBlogPosts: [],
+      techBlogPosts: [],
       postLoaded: null,
       blogInfo: "Write the blog information here...",
       blogTitle: "",
@@ -127,17 +130,20 @@ export default new Vuex.Store({
           const data = {
             blogID: doc.data().blogID,
             blogInfo: doc.data().blogInfo,
+            blogCategory: doc.data().blogCategory,
             blogCoverPhoto: doc.data().blogCoverPhoto,
             blogTitle: doc.data().blogTitle,
             blogDate: doc.data().date,
             blogCoverPhotoName: doc.data().blogCoverPhotoName,
-            blogCategory: doc.data().blogCategory,
             youtubeId: doc.data().youtubeId,
             youtubeImageURL: doc.data().youtubeImageURL,
           };
           state.blogPosts.push(data);
         }
       });
+      state.faithBlogPosts  = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Faith'.toLowerCase())
+      state.sportsBlogPosts = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Sports'.toLowerCase())
+      state.techBlogPosts   = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Technology'.toLowerCase())
       state.postLoaded = true;
     },
     async updatePost({ commit, dispatch }, payload) {

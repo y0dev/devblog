@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-2">
                     <ul>
-                    <router-link class="link" to="#">Email</router-link>
+                    <a class="link" href="mailto: devdoesit17@gmail.com">Email</a>
                     </ul>
                 </div>
             </div>

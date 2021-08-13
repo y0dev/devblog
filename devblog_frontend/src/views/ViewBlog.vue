@@ -3,8 +3,7 @@
     <div class="container quillWrapper">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <img class="photo" v-if="this.currentBlog[0].youtubeId !== ''" :src="this.currentBlog[0].youtubeImageURL" alt="">
-      <img class="photo" v-else :src="this.currentBlog[0].blogCoverPhoto" alt="">
+      <img class="photo" :src="this.currentBlog[0].blogCoverPhoto" alt="">
       <div class="post-content ql-editor" v-html="this.currentBlog[0].blogInfo"></div>
     </div>
   </div>

@@ -8,6 +8,14 @@
       </div>
       <div class="blog-info">
         <input type="text" placeholder="Enter Blog Title" v-model="blogTitle" />
+        <div class="category">
+          <select v-model="category">
+            <option disabled value="">Please select one</option>
+            <option>Faith</option>
+            <option>Sports</option>
+            <option>Technology</option>
+          </select>
+        </div>
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChanged" accept=".png, .jpg, .jpeg" />
@@ -45,9 +53,12 @@ export default {
       file: null,
       error: null,
       errorMsg: null,
+      category:null,
       loading: null,
       routeID: null,
+      uploadYoutube:null,
       currentBlog: null,
+      youtubeId:null,
       editorSettings: {
         modules: {
             ImageResize: {},
@@ -74,36 +85,33 @@ export default {
   },
   methods: {
         fileChanged() {
-      this.file = this.$refs.blogPhoto.files[0];
-      const fileName = this.file.name;
-      this.$store.commit("fileNameChange", fileName);
-      this.$store.commit("createFileURL", URL.createObjectURL(this.file));
-    },
-
-    openPreview() {
-      this.$store.commit("openPhotoPreview");
-    },
-
-    imageHandler(file, Editor, cursorLocation, resetUploader) {
-      const storageRef = storage.ref();
-      const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
-      docRef.put(file).on(
-        "state_changed",
-        (snapshot) => {
-          console.log(snapshot);
+          this.file = this.$refs.blogPhoto.files[0];
+          const fileName = this.file.name;
+          this.$store.commit("fileNameChange",fileName);
+          this.$store.commit("createFileURL",URL.createObjectURL(this.file));
         },
-        (err) => {
-          console.log(err);
+        openPreview() {
+          this.$store.commit("openPhotoPreview");
         },
-        async () => {
-          const downloadURL = await docRef.getDownloadURL();
-          Editor.insertEmbed(cursorLocation, "image", downloadURL);
-          resetUploader();
-        }
-      );
-    },
-
-    textHandler(delta, oldDelta, source) {
+        imageHandler(file,Editor,cursorLocation,resetUploader) {
+            const storageRef = storage.ref();
+            const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
+            docRef.put(file).on(
+              "state_changed",
+              (snapshot) => {
+                console.log(snapshot);
+              },
+              (err) => {
+                console.log(err);
+              },
+              async () => {
+                const downloadURL = await docRef.getDownloadURL();
+                Editor.insertEmbed(cursorLocation, "image", downloadURL);
+                resetUploader();
+              }
+            );
+        },
+        textHandler(delta, oldDelta, source) {
           if(source) {
             const text = this.blogInfo;
             

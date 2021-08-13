@@ -7,26 +7,22 @@
             <p><span>Error: </span>{{ this.errorMsg }}</p>
         </div>
         <div class="blog-info">
-            <input type="text" placeholder="Enter Title" v-model="blogTitle">
-            <div class="upload-file">
-                <label class="photo-label" for="blog-photo">Upload Cover Photo</label>
-                <input type="file" name="blogPhoto" id="blog-photo" ref="blogPhoto" @change="fileChanged" accept=".png, .jpg, .jpeg"/>
-                <button class="preview" :class="{'button-inactive': !this.$store.state.blogPhotoFileURL}" @click="openPreview">Preview Photo</button>
-                <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
-            </div>
-            <!-- <div class="toggle-switch">
-                <span>Add Youtube Video</span>
-                <input type="checkbox" v-model="uploadYoutube">
-            </div> -->
+          <input type="text" placeholder="Enter Title" v-model="blogTitle">
+          <div class="category">
+            <select v-model="category">
+              <option disabled value="">Please select one</option>
+              <option>Faith</option>
+              <option>Sports</option>
+              <option>Technology</option>
+            </select>
+          </div>
+          <div class="upload-file">
+              <label class="photo-label" for="blog-photo">Upload Cover Photo</label>
+              <input type="file" name="blogPhoto" id="blog-photo" ref="blogPhoto" @change="fileChanged" accept=".png, .jpg, .jpeg"/>
+              <button class="preview" :class="{'button-inactive': !this.$store.state.blogPhotoFileURL}" @click="openPreview">Preview Photo</button>
+              <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
+          </div>
         </div>
-        <!-- <div v-show="uploadYoutube" class="url-container">
-            <label class="url-label" for="url">Enter an https:// URL:</label>
-            <input type="url" name="url" id="url"
-                placeholder="https://example.com"
-                pattern="https://.*" size="30"
-                v-model="blogYoutubeURL"
-                required>
-        </div> -->
         <div class="editor">
             <vue-editor :editorOptions="editorSettings" v-model="blogInfo" useCustomImageHandler @image-added="imageHandler" @text-change="textHandler" />
         </div>
@@ -56,37 +52,35 @@ export default {
         BlogCoverPreview,
         Loading,
     },
-    data() {
-        return {
-            error: null,
-            errorMsg: null,
-            loading: null,
-            file: null,
-            uploadYoutube:null,
-            blogYoutubeURL: null,
-            youtubeId:null,
-            
-            editorSettings: {
-                modules: {
-                    ImageResize: {},
-                    VideoResize: {
-                        toolbarStyles: {
-                        backgroundColor: 'black',
-                        border: 'none',
-                        // other camelCase styles for size display
-                      },
-                    },
-                    toolbar: [
-                            ["bold", "italic", "underline"],
-                            [{ list: "ordered" }, { list: "bullet" }],
-                            ["image","video", "code-block"],
-                            ['clean']   
-                          ],
+  data() {
+    return {
+      file: null,
+      error: null,
+      errorMsg: null,
+      loading: null,
+      category: null,
+      youtubeId:null,
+      editorSettings: {
+        modules: {
+            ImageResize: {},
+            VideoResize: {
+                toolbarStyles: {
+                    backgroundColor: 'black',
+                    border: 'none',
+                   // other camelCase styles for size display
                 },
-            },
-        };
+             },
+            toolbar: [
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["image","video", "code-block"],
+                ['clean']   
+            ],
+        },
     },
-    methods: {
+    };
+  },
+  methods: {
         fileChanged() {
           this.file = this.$refs.blogPhoto.files[0];
           const fileName = this.file.name;
@@ -142,14 +136,11 @@ export default {
                 let images = getImages(snippet.thumbnails);
                 this.file = images[images.length - 1]
                 this.youtubeId = videoId;
-                console.log(`Umm`)
-                console.log(snippet)
                 let payload = {
                   url: images[images.length - 1],
                   youtubeId: this.youtubeId
                 }
                 this.$store.dispatch('getImageName',payload);
-                //this.$store.commit("blogYoutubeURL",snippet.thumbnails.maxres.url);
                 console.log(data);
               }).catch((err) => {
                 console.log(err)
@@ -166,7 +157,7 @@ export default {
           }
         },
         uploadBlog(){
-          if(this.blogTitle.length != 0 && this.blogInfo.length !== 0) {
+          if(this.blogTitle.length != 0 && this.blogInfo.length !== 0 && this.category) {
             if (this.file) {
               let text = this.blogInfo;
               if(text.includes("<iframe")) {
@@ -197,14 +188,13 @@ export default {
                   const dataBase = await postsCollection.doc();
                   await dataBase.set({
                     blogID: dataBase.id,
-                    blogInfo: text,
-                    blogCoverPhoto: (this.youtubeId) ? '' : downloadURL,
-                    blogCoverPhotoName: this.blogCoverPhotoName,
                     blogTitle: this.blogTitle,
+                    blogInfo: text,
+                    blogCategory: this.category,
+                    blogCoverPhoto: (this.youtubeId) ?  `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg` : downloadURL,
+                    blogCoverPhotoName: this.blogCoverPhotoName,
                     profileId: this.profileId,
                     youtubeId: (this.youtubeId) ? this.youtubeId: '',
-                    blogCategory: '',
-                    youtubeImageURL: (this.youtubeId) ? `https://img.youtube.com/vi/${this.youtubeId}/maxresdefault.jpg` : '',
                     date: timestamp,
                   });
                   await this.$store.dispatch("getPost");
@@ -220,7 +210,7 @@ export default {
             },5000);
           }
           this.error = true;
-          this.errorMsg = "Please ensure that Title and Post have been filled!";
+          this.errorMsg = "Please ensure that Title and Post have been filled! Also, make sure you selected a category!";
           setTimeout(() => {
               this.error = false;
           },5000);
@@ -260,58 +250,47 @@ export default {
                       this.$router.push({ name: "Home" });
                         return;
                     });
-                } 
-                // else if (this.uploadYoutube) {
-                //     if (this.blogYoutubeURL) {
-                //         return;
-                //     }
-                //     this.error = true;
-                //     this.errorMsg = "Please ensure that you uploaded a youtube link";
-                //     setTimeout(() => {
-                //         this.error = false;
-                //     },5000);
-                //     return;
-                // }
-                
+                }                 
                 this.error = true;
                 this.errorMsg = "Please ensure that you uploaded a cover photo";
                 setTimeout(() => {
                     this.error = false;
                 },5000);
-                return;
-            }
-            this.error = true;
-            this.errorMsg = "Please ensure that Title and Post have been filled!";
-            setTimeout(() => {
-                this.error = false;
-            },5000);
-        }
-    },
-    computed: {
-      profileId() {
-        return this.$store.state.profileId;
-      },
-      blogCoverPhotoName() {
-          return this.$store.state.blogPhotoName;
-      },
-      blogTitle: {
-          get() {
-              return this.$store.state.blogTitle;
-          },
-          set(payload) {
-              this.$store.commit("updateBlogTitle",payload);
-          }
-      },
-      blogInfo: {
-          get() {
-              return this.$store.state.blogInfo;
-          },
-          set(payload) {
-              this.$store.commit("newBlogPost",payload);
-          }
+        return;
       }
-    }
-}
+      this.error = true;
+            this.errorMsg = "Please ensure that Title and Post have been filled!";
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+      return;
+    },
+  },
+  computed: {
+    profileId() {
+      return this.$store.state.profileId;
+    },
+    blogCoverPhotoName() {
+      return this.$store.state.blogPhotoName;
+    },
+    blogTitle: {
+      get() {
+        return this.$store.state.blogTitle;
+      },
+      set(payload) {
+        this.$store.commit("updateBlogTitle", payload);
+      },
+    },
+    blogInfo: {
+      get() {
+        return this.$store.state.blogInfo;
+      },
+      set(payload) {
+        this.$store.commit("newBlogPost", payload);
+      },
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -368,10 +347,17 @@ export default {
     }
   }
   .blog-info {
+    
     display: flex;
     margin-bottom: 32px;
     input:nth-child(1) {
       min-width: 300px;
+    }
+
+    .category {
+      position: relative;
+      margin: 0 20px;
+      align-items: center;
     }
     .upload-file {
       flex: 1;

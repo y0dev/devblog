@@ -1,47 +1,36 @@
 <template>
     <div class="blog-card-wrap">
-        <h2>Title</h2>
         <div class="blog-cards container">
             <div class="toggle-edit">
                 <span>Toggle Editing Post</span>
                 <input type="checkbox" v-model="editPost">
             </div>
-            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
         </div>
-        <h2>Title</h2>
-        <div class="blog-cards container section">
-            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
-        </div>
-        <h2>Title</h2>
-        <div class="blog-cards container section">
-            <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
-        </div>
+        <BlogSection title="Faith" :blogPosts="faithBlogPosts"/>
+        <BlogSection title="Sports" :blogPosts="sportsBlogPosts"/>
+        <BlogSection title="Technology" :blogPosts="techBlogPosts"/>
     </div>
 </template>
 
 <script>
-import BlogCard from "../components/BlogCard.vue";
+import BlogSection from "../components/BlogSection.vue";
 export default {
     name:"Blogs",
     components: {
-        BlogCard,
-    },
-    created() {
-        console.log(this.$store.state.user)
-        fetch(`http://localhost:${process.env.VUE_APP_SERVER_PORT}/api/blogs`, {
-            method: "POST",
-            body: JSON.stringify({
-                email: this.$store.state.email,
-            })
-            })
-            .then(response => response.json() )
-            .then((data) => {
-                console.log(data);
-            })
+        BlogSection
     },
     computed: {
         blogPosts() {
             return this.$store.state.blogPosts;
+        },
+        faithBlogPosts() {
+            return this.$store.state.faithBlogPosts;
+        },
+        sportsBlogPosts() {
+            return this.$store.state.sportsBlogPosts;
+        },
+        techBlogPosts() {
+            return this.$store.state.techBlogPosts;
         },
         editPost: {
             get() {

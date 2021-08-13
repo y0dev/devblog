@@ -13,8 +13,7 @@
                 <Delete class="delete" />
             </div>
         </div>
-        <img v-if="post.youtubeId !== ''" :src="post.youtubeImageURL" alt="">
-        <img v-else :src="post.blogCoverPhoto" alt="">
+        <img :src="post.blogCoverPhoto" alt="">
         <div class="info">
             <h4>{{ post.blogTitle }}</h4>
             <h6>Posted on: {{ new Date(post.blogDate).toLocaleString('en-us', { dateStyle: 'long'}) }}</h6>
@@ -38,8 +37,6 @@ export default {
         Delete,
         Edit,
         Play
-    },created() {
-        console.log(this.post)
     },
     methods: {
         deletePost() {

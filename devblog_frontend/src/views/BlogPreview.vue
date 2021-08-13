@@ -3,7 +3,7 @@
     <div class="container quillWrapper">
       <h2>{{ this.blogTitle }}</h2>
       <img :src="blogCoverPhoto" alt="" />
-      <div class="post-content ql-editor" v-html="blogHTML"></div>
+      <div class="post-content ql-editor" v-html="blogInfo"></div>
     </div>
   </div>
 </template>
@@ -11,16 +11,33 @@
 <script>
 export default {
   name: "PostPreview",
+  data() {
+    return {
+      blogInfo: null
+    }
+  },
   computed: {
     blogTitle() {
       return this.$store.state.blogTitle;
     },
     blogHTML() {
-      return this.$store.state.blogInfo;
+      return this.$store.state.blogHTML;
     },
     blogCoverPhoto() {
       return this.$store.state.blogPhotoFileURL;
     },
+  },
+  updated() {
+    let text = this.blogHTML;
+    console.log(text)
+    if(text.includes("<iframe")) {
+      let startingIdx = text.indexOf("<iframe");
+      let endingIdx = text.indexOf("</iframe>") + "</iframe>".length
+      let iframe = text.substring(startingIdx, endingIdx);
+      console.log(iframe)
+      const wrapped = '<div src="video-view">\n\t' + iframe + '\n</div>\n';
+      this.blogHTML = text.replace(iframe, wrapped);
+    }
   },
 };
 </script>

@@ -43,8 +43,7 @@
                 </div>
             </div>
             <div v-else :src="post.blogCoverPhoto" class="post-img">
-                <img class="photo" v-if="post.youtubeId !== ''" :src="post.youtubeImageURL" alt="">
-                <img class="photo" v-else :src="post.blogCoverPhoto" alt="">
+                <img class="photo" :src="post.blogCoverPhoto" alt="">
             </div>
         </div>       
     </div>
