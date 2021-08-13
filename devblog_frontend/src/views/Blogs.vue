@@ -1,106 +1,98 @@
 <template>
-    <div class="blog-card-wrap">
-        <div class="blog-cards container">
-            <div class="toggle-edit">
-                <span>Toggle Editing Post</span>
-                <input type="checkbox" v-model="editPost">
-            </div>
-        </div>
+  <div class="blog-card-wrap">
+    <div class="blog-cards container">
+      <div class="toggle-edit">
+        <span>Toggle Editing Post</span>
+        <input type="checkbox" v-model="editPost" />
+      </div>
+    </div>
         <BlogSection title="Faith" :blogPosts="faithBlogPosts"/>
         <BlogSection title="Sports" :blogPosts="sportsBlogPosts"/>
         <BlogSection title="Technology" :blogPosts="techBlogPosts"/>
-    </div>
+  </div>
 </template>
 
 <script>
 import BlogSection from "../components/BlogSection.vue";
 export default {
-    name:"Blogs",
-    components: {
-        BlogSection
+  name:"Blogs",
+  components: {
+    BlogSection
+  },
+  computed: {
+    blogPosts() {
+      return this.$store.state.blogPosts;
     },
-    computed: {
-        blogPosts() {
-            return this.$store.state.blogPosts;
-        },
-        faithBlogPosts() {
-            return this.$store.state.faithBlogPosts;
-        },
-        sportsBlogPosts() {
-            return this.$store.state.sportsBlogPosts;
-        },
-        techBlogPosts() {
-            return this.$store.state.techBlogPosts;
-        },
-        editPost: {
-            get() {
-                return this.$store.state.editPost;
-            },
-            set(payload) {
-                this.$store.commit("toggleEditPost", payload);
-            },
-        },
-    },beforeDestroy() {
-        this.$store.commit("toggleEditPost",false);
+    faithBlogPosts() {
+      return this.$store.state.faithBlogPosts;
     },
-}
+    sportsBlogPosts() {
+      return this.$store.state.sportsBlogPosts;
+    },
+    techBlogPosts() {
+      return this.$store.state.techBlogPosts;
+    },
+    editPost: {
+      get() {
+        return this.$store.state.editPost;
+      },
+      set(payload) {
+        this.$store.commit("toggleEditPost", payload);
+      },
+    },
+  },
+  beforeDestroy() {
+    this.$store.commit("toggleEditPost", false);
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 
 .blog-cards {
-    position: relative;
+  position: relative;
 
-    .toggle-edit{
-        display: flex;
-        align-items: center;
-        position: absolute;
-        top: -70px;
-        right: 0;
+  .toggle-edit {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: -70px;
+    right: 0;
 
-        span {
-            margin-right: 16px;
-        }
-
-        input[type="checkbox"] {
-            position: relative;
-            border: none;
-            -webkit-appearance: none;
-            background: #FFFFFF;
-            outline: none;
-            width: 80px;
-            height: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
-        }
-
-        input[type="checkbox"]:before {
-            content: "";
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border-radius: 20px;
-            top: 0;
-            left: 0;
-            background: #30303030;
-            transform: scale(1.1);
-            transition: 750ms ease all;
-            box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
-        }
-
-        input:checked[type="checkbox"]:before {
-            background: #FFFFFF;
-            left: 52px;
-        }
+    span {
+      margin-right: 16px;
     }
-}
 
-h2 {
-    margin-top: 50px;
-    margin-left: 20px;
-}
-.section {
-    margin-top: 100px;
-}
+    input[type="checkbox"] {
+      position: relative;
+      border: none;
+      -webkit-appearance: none;
+      background: #FFFFFF;
+      outline: none;
+      width: 80px;
+      height: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
+    }
 
+    input[type="checkbox"]:before {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      background: #30303030;
+      transform: scale(1.1);
+      transition: 750ms ease all;
+      box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
+    }
+
+    input:checked[type="checkbox"]:before {
+      background: #FFFFFF;
+      left: 52px;
+    }
+  }
+}
 </style>

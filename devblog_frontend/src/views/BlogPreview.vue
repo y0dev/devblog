@@ -34,8 +34,6 @@ export default {
       return this.$store.state.blogPhotoFileURL;
     },
   },
-  updated() {
-  },
 };
 </script>
 

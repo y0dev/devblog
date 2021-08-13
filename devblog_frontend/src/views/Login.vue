@@ -4,11 +4,11 @@
             <h2>Login to DevBlog</h2>
             <div class="inputs">
                 <div class="input">
-                    <input type="text" placeholder="Email" v-model="usernameEmail">
+                    <input type="text" placeholder="Email" v-model="usernameEmail" />
                     <email class="icon"/>
                 </div>
                 <div class="input">
-                    <input type="password" placeholder="Password" v-model="password">
+                    <input type="password" placeholder="Password" v-model="password" />
                     <password class="icon"/>
                 </div>
                 <div class="error" v-show="error"> {{ this.errorMsg }}</div>

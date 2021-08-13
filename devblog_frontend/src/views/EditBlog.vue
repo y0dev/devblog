@@ -86,38 +86,39 @@ export default {
     this.$store.commit("setBlogState", this.currentBlog[0]);
   },
   methods: {
-        fileChanged() {
-          this.file = this.$refs.blogPhoto.files[0];
-          const fileName = this.file.name;
-          this.$store.commit("fileNameChange",fileName);
-          this.$store.commit("createFileURL",URL.createObjectURL(this.file));
-        },
+    fileChanged() {
+      this.file = this.$refs.blogPhoto.files[0];
+      const fileName = this.file.name;
+      this.$store.commit("fileNameChange", fileName);
+      this.$store.commit("createFileURL", URL.createObjectURL(this.file));
+    },
         previewPost() {
           
           this.$store.state.blogInfo = wrapVideo(this.blogInfo);
           this.$router.push({ name: "BlogPreview" });
         },
-        openPreview() {
-          this.$store.commit("openPhotoPreview");
+    openPreview() {
+      this.$store.commit("openPhotoPreview");
+    },
+
+    imageHandler(file, Editor, cursorLocation, resetUploader) {
+      const storageRef = storage.ref();
+      const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
+      docRef.put(file).on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
         },
-        imageHandler(file,Editor,cursorLocation,resetUploader) {
-            const storageRef = storage.ref();
-            const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
-            docRef.put(file).on(
-              "state_changed",
-              (snapshot) => {
-                console.log(snapshot);
-              },
-              (err) => {
-                console.log(err);
-              },
-              async () => {
-                const downloadURL = await docRef.getDownloadURL();
-                Editor.insertEmbed(cursorLocation, "image", downloadURL);
-                resetUploader();
-              }
-            );
+        (err) => {
+          console.log(err);
         },
+        async () => {
+          const downloadURL = await docRef.getDownloadURL();
+          Editor.insertEmbed(cursorLocation, "image", downloadURL);
+          resetUploader();
+        }
+      );
+    },
         textHandler(delta, oldDelta, source) {
           if(source) {
             const text = this.blogInfo;
@@ -239,7 +240,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .create-post {
   position: relative;
   height: 100%;

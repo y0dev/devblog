@@ -2,7 +2,7 @@
     <div class="blog-wrapper about-me">
         <div class="blog-content">
             <div>
-                <h2 v-if="post.aboutMeScreen">{{post.title}}</h2>
+                <h2 v-if="post.aboutMeScreen">{{ post.title }}</h2>
                 <h2 v-else>{{post.blogTitle}}</h2>
                 <p v-if="post.aboutMeScreen">{{post.info}}</p>
                 <p class="content-preview" v-else v-html="post.blogInfo"></p>
@@ -52,12 +52,11 @@
 <script>
 import Arrow from "../assets/icons/arrow-right-light.svg";
 export default {
-    name: "blogPost",
-    props: ["post"],
-    components: {
-        // agile: VueAgile,
-        Arrow,
-    },
+  name: "blogPost",
+  props: ["post"],
+  components: {
+    Arrow,
+  },
     data() {
         return {
             images:null,
@@ -102,11 +101,11 @@ export default {
         currentImage() {
             return this.images[Math.abs(this.currentIndex) % this.images.length];
         },
-        user() {
-            return this.$store.state.user;
-        }
-    }
-}
+    user() {
+      return this.$store.state.user;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
