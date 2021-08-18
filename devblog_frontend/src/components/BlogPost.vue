@@ -18,15 +18,15 @@
       <div v-if="post.title" class="slideshow">
         <div class="slideshow-container">
           <div class="mySlides fade">
-            <div class="numbertext">1 / 3</div>
+            <div class="numbertext">1 / 2</div>
             <img :src="require(`../assets/blogPhotos/4oJ.jpg`)" />
-            <div class="text">Caption Text</div>
+            <div class="text">First Family Holiday</div>
           </div>
 
           <div class="mySlides fade">
-            <div class="numbertext">2 / 3</div>
+            <div class="numbertext">2 / 2</div>
             <img :src="require(`../assets/blogPhotos/wed.jpg`)" />
-            <div class="text">Caption Two</div>
+            <div class="text">Pandemic Wedding</div>
           </div>
 
           <a class="prev" @click="plusSlides(-1)">&#10094;</a>
@@ -102,6 +102,8 @@ export default {
 
 <style lang="scss" scoped>
 .blog-wrapper {
+  
+  border: 1px solid yellow;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.6);
@@ -184,7 +186,8 @@ export default {
     order: 1;
     flex: 3;
     box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.6);
-
+    
+    border: 1px solid red;
     @media (min-width: 700px) {
       order: 2;
     }
@@ -192,29 +195,35 @@ export default {
       flex: 4;
     }
 
-    .photo {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-      
-    .slideshow-container {
-      display: none;
+    .slideshow {
       position: relative;
-      margin: auto;
-      .mySlides {
-          position: relative;
-          display: none;
+      // border: 3px solid powderblue;
+      height: 100%;
+      .slideshow-container {
+        // border: 1px solid red;
+        // position: absolute;
+        // display: inline-block;
+        // max-width: 100%;
+        width: 100%;
+        height: 100%;
+        .mySlides {
+          // border: 3px solid blue;
           width: 100%;
           height: 100%;
-      }
-      img {vertical-align: middle;}
-      @media(min-width: 700px) {
-          min-width: 600px;
-      }
-      /* Next & previous buttons */
-      .prev, .next {
+        }
+        img {
+          vertical-align: middle;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        @media(min-width: 700px) {
+          min-width: 100%;
+          min-height: 100%;
+        }
+        /* Next & previous buttons */
+        .prev, .next {
           cursor: pointer;
           position: absolute;
           top: 50%;
@@ -227,21 +236,21 @@ export default {
           transition: 0.6s ease;
           border-radius: 0 3px 3px 0;
           user-select: none;
-      }
+        }
 
-      /* Position the "next button" to the right */
-      .next {
+        /* Position the "next button" to the right */
+        .next {
           right: 0;
           border-radius: 3px 0 0 3px;
-      }
+        }
 
-      /* On hover, add a black background color with a little bit see-through */
-      .prev:hover, .next:hover {
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
           background-color: rgba(0,0,0,0.8);
-      }
+        }
 
-      /* Caption text */
-      .text {
+        /* Caption text */
+        .text {
           color: #f2f2f2;
           font-size: 15px;
           padding: 8px 12px;
@@ -249,19 +258,20 @@ export default {
           bottom: 8px;
           width: 100%;
           text-align: center;
-      }
-      
-      /* Number text (1/3 etc) */
-      .numbertext {
+          background-color: rgba(0,0,0,0.5);
+        }
+        
+        /* Number text (1/2 etc) */
+        .numbertext {
           color: #f2f2f2;
           font-size: 12px;
           padding: 8px 12px;
           position: absolute;
           top: 0;
-      }
+        }
 
-      /* The dots/bullets/indicators */
-      .dot {
+        /* The dots/bullets/indicators */
+        .dot {
           cursor: pointer;
           height: 15px;
           width: 15px;
@@ -270,35 +280,45 @@ export default {
           border-radius: 50%;
           display: inline-block;
           transition: background-color 0.6s ease;
-      }
+        }
 
-      .active, .dot:hover {
+        .active, .dot:hover {
           background-color: #717171;
-      }
+        }
 
-      /* Fading animation */
-      .fade {
+        /* Fading animation */
+        .fade {
           -webkit-animation-name: fade;
           -webkit-animation-duration: 1.5s;
           animation-name: fade;
           animation-duration: 1.5s;
-      }
+        }
 
-      @-webkit-keyframes fade {
+        @-webkit-keyframes fade {
           from {opacity: .4} 
           to {opacity: 1}
-      }
+        }
 
-      @keyframes fade {
+        @keyframes fade {
           from {opacity: .4} 
           to {opacity: 1}
-      }
+        }
 
-      /* On smaller screens, decrease text size */
-      @media only screen and (max-width: 300px) {
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
           .prev, .next,.text {font-size: 11px}
+        }
       }
     }
+    
+    .photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+      
+    
   }
 
   &:nth-child(even) {
