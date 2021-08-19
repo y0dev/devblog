@@ -6,7 +6,7 @@
         <h2 v-else>{{ post.blogTitle }}</h2>
         <p v-if="post.title">{{post.info}}</p>
         <p class="content-preview" v-else v-html="post.blogInfo"></p>
-        <router-link class="link link-light" v-if="post.title" to="#">
+        <router-link class="link link-light" v-if="post.title" :to="{ name: 'ViewAboutMe' }">
           Learn More<Arrow class="arrow arrow-light" />
         </router-link>
         <router-link class="link" v-else :to="{ name: 'ViewBlog', params: { blogid: this.post.blogID } }">
@@ -103,7 +103,7 @@ export default {
 <style lang="scss" scoped>
 .blog-wrapper {
   
-  border: 1px solid yellow;
+  //border: 1px solid yellow;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.6);
@@ -187,27 +187,29 @@ export default {
     flex: 3;
     box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.6);
     
-    border: 1px solid red;
+    //border: 1px solid red;
     @media (min-width: 700px) {
       order: 2;
     }
     @media (min-width: 800px) {
       flex: 4;
     }
+    
+    .photo {
+      background: yellowgreen;
+      // display: block;
+      width: 100%;
+      height: 100%;
+      // object-fit: cover;
+    }
 
     .slideshow {
       position: relative;
-      // border: 3px solid powderblue;
       height: 100%;
       .slideshow-container {
-        // border: 1px solid red;
-        // position: absolute;
-        // display: inline-block;
-        // max-width: 100%;
         width: 100%;
         height: 100%;
         .mySlides {
-          // border: 3px solid blue;
           width: 100%;
           height: 100%;
         }
@@ -311,12 +313,7 @@ export default {
       }
     }
     
-    .photo {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    
       
     
   }

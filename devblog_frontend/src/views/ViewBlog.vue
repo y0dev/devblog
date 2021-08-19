@@ -17,6 +17,11 @@ export default {
       currentBlog: null,
     };
   },
+  created() {
+    // let esvScript = document.createElement('script')
+    // esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    // document.head.appendChild(esvScript)
+  },
   async mounted() {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
       return post.blogID === this.$route.params.blogid;
@@ -44,6 +49,10 @@ export default {
         width:100%;
         height:100%;
     }
+  }
+
+  a.esv-crossref-link {
+    color: #72abbf !important;
   }
 }
 </style>

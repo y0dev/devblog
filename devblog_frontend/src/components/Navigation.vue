@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="container">
+    <nav class="nav-container">
       <div class="branding">
         <router-link class="header" :to="{ name: 'Home' }">DevBlog</router-link>
       </div>
@@ -114,7 +114,7 @@ export default {
 header {
   background-color: #fff;
   padding: 0 25px;
-    box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
+  box-shadow: 0 4px 6px -1px rgba($color: #000000, $alpha: 0.1), 0 2px 4px -1px rgba($color: #000000, $alpha: 0.06);
   z-index: 99;
 
   .link {
@@ -130,7 +130,7 @@ header {
   nav {
     display: flex;
     padding: 25px 0;
-
+    
     .branding {
       display: flex;
       align-items: center;
