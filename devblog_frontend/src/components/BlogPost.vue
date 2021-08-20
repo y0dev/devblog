@@ -196,11 +196,10 @@ export default {
     }
     
     .photo {
-      background: yellowgreen;
-      // display: block;
+      display: block;
+      object-fit: cover;
       width: 100%;
       height: 100%;
-      // object-fit: cover;
     }
 
     .slideshow {
@@ -218,6 +217,10 @@ export default {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          margin-bottom: -5%;
+          @media(min-width: 700px) {
+            margin-bottom: 0;
+          }
         }
 
         @media(min-width: 700px) {
