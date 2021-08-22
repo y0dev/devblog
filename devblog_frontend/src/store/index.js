@@ -121,7 +121,7 @@ export default new Vuex.Store({
       commit("setProfileInitials");
     },
     async getImageNameYoutube({ commit }, payload) {
-      commit("fileNameChange",`youtube_${payload.youtubeId}.jpg`);
+      commit("fileNameChange",payload.url);
       commit("createFileURL",payload.url);
     },
     async getAboutMe({ state }) {
@@ -148,8 +148,7 @@ export default new Vuex.Store({
             blogTitle: doc.data().blogTitle,
             blogDate: doc.data().date,
             blogCoverPhotoName: doc.data().blogCoverPhotoName,
-            youtubeId: doc.data().youtubeId,
-            youtubeImageURL: doc.data().youtubeImageURL,
+            videoId: doc.data().videoId,
           };
           state.blogPosts.push(data);
         }

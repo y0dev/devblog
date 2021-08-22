@@ -66,6 +66,25 @@ async function downloadImage(imageSrc, imageName) {
     document.body.removeChild(link)
 }
 
+
+// console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
+// console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
+//https://www.youtube.com/watch?v=KpEXNP48rgA
+function getYouTubeThumbnail(videoId) {
+    return new Promise((resolve) => {
+        fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`, {
+        method: "GET",
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const item0 = data.items[0];
+            const snippet = item0.snippet;
+            let images = getImages(snippet.thumbnails);
+            resolve(images[images.length -1])
+        });
+    });
+}
 const getIframes = (html) => {
     return new Promise((resolve) => {
         const dom = cheerio.load(html);
@@ -89,4 +108,5 @@ export {
     getVideoId_YT,
     unwrapVideo,
     getIframes,
+    getYouTubeThumbnail,
   }

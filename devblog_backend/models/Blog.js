@@ -29,7 +29,7 @@ const blog = new Schema({
     type: String,
     required: 'Need a photo url'
   },
-  youtubeId: String,
+  videoId: String,
   dateAdded: {
     type: Date,
     default: Date.now
