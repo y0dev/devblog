@@ -3,32 +3,29 @@
     <div class="container quillWrapper">
       <h2>{{ this.blogTitle }}</h2>
       <img :src="blogCoverPhoto" alt="" />
-      <div class="post-content ql-editor" v-html="blogInfo"></div>
+      <div class="post-content ql-editor" v-html="this.blogHtml"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { unwrapVideo } from '../helpers';
+import { getIframes } from '../helpers';
 export default {
   name: "PostPreview",
   data() {
     return {
+      blogHtml: ''
     }
-  },mounted() {
-    
-    console.log(this.$store.state.blogInfo)
+  },
+  async mounted() {
+    this.blogHtml = await getIframes(this.$store.state.blogInfo)
   },
   destroyed() {
     console.log(this.$store.state.blogInfo)
-    unwrapVideo(this.$store.state.blogInfo)
   },
   computed: {
     blogTitle() {
       return this.$store.state.blogTitle;
-    },
-    blogInfo() {
-      return this.$store.state.blogInfo;
     },
     blogCoverPhoto() {
       return this.$store.state.blogPhotoFileURL;

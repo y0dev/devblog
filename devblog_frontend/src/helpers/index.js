@@ -1,5 +1,6 @@
+const cheerio = require('cheerio');
 
-String.prototype.splice = function(idx, rem, str) {
+String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
 
@@ -65,6 +66,16 @@ async function downloadImage(imageSrc, imageName) {
     document.body.removeChild(link)
 }
 
+const getIframes = (html) => {
+    return new Promise((resolve) => {
+        const dom = cheerio.load(html);
+        const iframes = dom('iframe.ql-video');
+        iframes.wrap('<div class=\'video-view\'></div>')
+        //console.log(dom.html())
+        resolve(dom.html());
+    });
+};
+
 /*
 <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/248215185?h=ad93b7d533&color=456a7e&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
 <p><a href="https://vimeo.com/248215185">Grace Community Church Christmas Concert 2017</a> from <a href="https://vimeo.com/gracecomchurch">Grace Community Church</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
@@ -77,4 +88,5 @@ export {
     getImages,
     getVideoId_YT,
     unwrapVideo,
+    getIframes,
   }

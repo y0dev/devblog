@@ -149,9 +149,10 @@ export default {
         uploadBlog(){
           if(this.blogTitle.length != 0 && this.blogInfo.length !== 0 && this.category) {
             if (this.file) {
-              let text = wrapVideo(this.blogInfo);
+              let text = this.blogInfo;
 
               this.loading = true;
+              if(!this.$store.state.blogPhotoName.includes("https:")) {
               const storageRef = storage.ref();
               const docRef = storageRef.child(`documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`);
 
@@ -173,16 +174,36 @@ export default {
                     blogTitle: this.blogTitle,
                     blogInfo: text,
                     blogCategory: this.category,
-                    blogCoverPhoto: (this.youtubeId) ?  this.file : downloadURL,
+                    blogCoverPhoto: downloadURL,
                     blogCoverPhotoName:  this.blogCoverPhotoName,
                     profileId: this.profileId,
-                    youtubeId: (this.youtubeId) ? this.youtubeId: '',
+                    videoId: '',
                     date: timestamp,
                   });
                   await this.$store.dispatch("getPost");
                   this.loading = false;
                   this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
                 });
+              } else {
+                async () => {
+                  const timestamp = await Date.now();
+                  const dataBase = await postsCollection.doc();
+                  await dataBase.set({
+                    blogID: dataBase.id,
+                    blogTitle: this.blogTitle,
+                    blogInfo: text,
+                    blogCategory: this.category,
+                    blogCoverPhoto: this.file,
+                    blogCoverPhotoName:  this.blogCoverPhotoName,
+                    profileId: this.profileId,
+                    videoId: this.youtubeId,
+                    date: timestamp,
+                  });
+                  await this.$store.dispatch("getPost");
+                  this.loading = false;
+                  this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+                }
+              }
               return;
             }
             this.error = true;
@@ -346,6 +367,7 @@ export default {
       margin-left: 16px;
       position: relative;
       display: flex;
+
       input {
         display: none;
       }

@@ -45,7 +45,7 @@ const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 
 import { storage, postsCollection } from '../firebase'
-import {  getImages, getVideoId_YT, unwrapVideo, wrapVideo } from '../helpers';
+import {  getImages, getVideoId_YT } from '../helpers';
 export default {
   name: "CreatePost",
   data() {
@@ -82,7 +82,6 @@ export default {
       return post.blogID === this.routeID;
     });
     this.category = this.currentBlog[0].blogCategory;
-    this.currentBlog[0].blogInfo = unwrapVideo(this.currentBlog[0].blogInfo);
     this.$store.commit("setBlogState", this.currentBlog[0]);
   },
   methods: {
@@ -92,11 +91,9 @@ export default {
       this.$store.commit("fileNameChange", fileName);
       this.$store.commit("createFileURL", URL.createObjectURL(this.file));
     },
-        previewPost() {
-          
-          this.$store.state.blogInfo = wrapVideo(this.blogInfo);
-          this.$router.push({ name: "BlogPreview" });
-        },
+    async previewPost() {
+      this.$router.push({ name: "BlogPreview" });
+    },
     openPreview() {
       this.$store.commit("openPhotoPreview");
     },
@@ -139,7 +136,6 @@ export default {
                 let images = getImages(snippet.thumbnails);
                 this.file = images[images.length - 1]
                 
-                console.log(snippet)
                 let payload = {
                   url: this.file,
                   youtubeId: this.youtubeId
@@ -166,33 +162,48 @@ export default {
         if (this.file) {
           this.loading = true;
 
-          let text = wrapVideo(this.blogInfo)
-          const storageRef = storage.ref();
-          const docRef = storageRef.child(`documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`);
-          docRef.put(this.file).on(
-            "state_changed",
-            (snapshot) => {
-              console.log(snapshot);
-            },
-            (err) => {
-              console.log(err);
-              this.loading = false;
-            },
-            async () => {
-              const downloadURL = await docRef.getDownloadURL();
+          let text = this.blogInfo
+          if(!this.$store.state.blogPhotoName.includes("https:")) {
+            const storageRef = storage.ref();
+            const docRef = storageRef.child(`documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`);
+            docRef.put(this.file).on(
+              "state_changed",
+              (snapshot) => {
+                console.log(snapshot);
+              },
+              (err) => {
+                console.log(err);
+                this.loading = false;
+              },
+              async () => {
+                const downloadURL = await docRef.getDownloadURL();
 
-              await dataBase.update({
-                blogInfo: text,
-                blogCoverPhoto: (this.youtubeId) ?  this.file : downloadURL,
-                blogCoverPhotoName: this.blogCoverPhotoName,
-                blogTitle: this.blogTitle,
-                youtubeId: (this.youtubeId) ? this.youtubeId: '',
-              });
-              await this.$store.dispatch("updatePost", this.routeID);
-              this.loading = false;
-              this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+                await dataBase.update({
+                  blogInfo: text,
+                  blogCoverPhoto: downloadURL,
+                  blogCoverPhotoName: this.blogCoverPhotoName,
+                  blogTitle: this.blogTitle,
+                  youtubeId:'',
+                });
+                await this.$store.dispatch("updatePost", this.routeID);
+                this.loading = false;
+                this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+              }
+            );
+          } else {
+            async () => {
+               await dataBase.update({
+                  blogInfo: text,
+                  blogCoverPhoto: this.file,
+                  blogCoverPhotoName: this.blogCoverPhotoName,
+                  blogTitle: this.blogTitle,
+                  youtubeId: this.youtubeId,
+                });
+                await this.$store.dispatch("updatePost", this.routeID);
+                this.loading = false;
+                this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
             }
-          );
+          }
           return;
         }
         this.loading = true;
