@@ -11,36 +11,6 @@ function getVideoId_YT(text) {
     return text.substring(startingIdx, endingIdx);
 }
 
-function wrapVideo(text) {
-    let newText = text
-    if(newText.includes("<iframe")) {
-        let startingIdx = newText.indexOf("<iframe");
-        let endingIdx = newText.indexOf("</iframe>") + "</iframe>".length
-        let iframe = newText.substring(startingIdx, endingIdx);
-
-        const wrapped = '<div class="video-view">\n\t' + iframe + '\n</div>\n';
-        newText = newText.replace(iframe, wrapped);
-    }
-    return newText;
-}
-
-function unwrapVideo(text) {
-    let newText = text
-    console.log(newText)
-    if(newText.includes("<div class=\"video-view\"")) {
-        let startingIdx = newText.indexOf("<iframe");
-        let endingIdx = newText.indexOf("</iframe>") + "</iframe>".length
-        let iframe = newText.substring(startingIdx, endingIdx);
-
-        startingIdx = newText.indexOf("<div class=\"video-view\"");
-        endingIdx = newText.indexOf("</iframe></div>") + "</iframe></div>".length
-        let div = newText.substring(startingIdx, endingIdx);
-
-        newText = newText.replace(div, iframe);
-    }
-    console.log(newText)
-    return newText;
-}
 
 function getImages(thumbnails) {
     let images = []
@@ -52,20 +22,6 @@ function getImages(thumbnails) {
     }
     return images
 }
-async function downloadImage(imageSrc, imageName) {
-    console.log(imageSrc)
-    const image = await fetch(imageSrc,{mode:'no-cors'})
-    const imageBlog = await image.blob()
-    const imageURL = URL.createObjectURL(imageBlog)
-  
-    const link = document.createElement('a')
-    link.href = imageURL
-    link.download = imageName
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-}
-
 
 // console.log(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
 // console.log(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=snippet&id=${videoId}`)
@@ -102,11 +58,7 @@ const getIframes = (html) => {
 */
 
 export {
-    downloadImage,
-    wrapVideo,
-    getImages,
     getVideoId_YT,
-    unwrapVideo,
     getIframes,
     getYouTubeThumbnail,
   }

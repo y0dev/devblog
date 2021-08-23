@@ -33,7 +33,13 @@ export default {
     blogPostsCards() {
       return this.$store.getters.blogPostsCards;
     }
-  }
+  },
+  mounted() {
+    
+    let esvScript = document.createElement('script')
+    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    document.body.appendChild(esvScript)
+  },
 };
 </script>
 

@@ -19,16 +19,15 @@ export default {
       blogHtml: '',
     };
   },
-  created() {
-    // let esvScript = document.createElement('script')
-    // esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
-    // document.head.appendChild(esvScript)
-  },
   async mounted() {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
       return post.blogID === this.$route.params.blogid;
     });
     this.blogHtml = await getIframes(this.currentBlog[0].blogInfo)
+
+    let esvScript = document.createElement('script')
+    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    document.body.appendChild(esvScript)
   },
 };
 </script>

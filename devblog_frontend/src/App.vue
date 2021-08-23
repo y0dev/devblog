@@ -34,6 +34,7 @@ export default {
     this.checkRoute();
     this.$store.dispatch('getAboutMe');
     this.$store.dispatch('getPost');
+    
   },
   mounted() {
   },
