@@ -22,6 +22,7 @@ const storage = firebase.storage();
 const timeStamp = firebase.firestore.FieldValue.serverTimestamp;
 
 // collection references
+const aboutMeCollection = db.collection('aboutMe')
 const usersCollection = db.collection('users')
 const postsCollection = db.collection('posts')
 
@@ -31,6 +32,7 @@ export {
   auth,
   storage,
   timeStamp,
+  aboutMeCollection,
   usersCollection,
   postsCollection,
 }

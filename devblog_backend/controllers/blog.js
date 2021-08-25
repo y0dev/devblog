@@ -12,8 +12,8 @@ const newBlog = (req, res) => {
             coverPhoto: req.body.coverPhoto,
             coverPhotoURL: req.body.coverPhotoURL
         });
-        if (req.body.youtubeId) {
-            newBlog.youtubeId = req.body.youtubeId;
+        if (req.body.videoId) {
+            newBlog.videoId = req.body.videoId;
         }
         newBlog.save(function (err,blog) {
             if (err) throw err

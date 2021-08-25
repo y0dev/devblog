@@ -1,7 +1,7 @@
 <template>
     <div class="blog-card">
         <div class="category-icons">
-            <div v-show="post.youtubeId !== ''" class="icon">
+            <div v-show="post.videoId !== ''" class="icon">
                 <Play class="video" />
             </div>
         </div>

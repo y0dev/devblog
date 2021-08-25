@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BlogPost :post="aboutMeScreen" />
+    <BlogPost :post="aboutMePost" />
     <BlogPost :post="post" v-for="(post,index) in blogPostsFeed" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
@@ -23,36 +23,23 @@ export default {
     BlogPost,
     BlogCard,
   },
-  data() {
-    return {
-      aboutMeScreen: {
-        title: "About Me",
-        info: "Hi, I'm Devontae",
-        aboutMeScreen: true,
-        photos: ["me1","me2"],
-      },
-      sampleBlogPosts: [
-        {
-          title: "This is a Sample Title",
-          info: "Sample descrition goes here",
-          coverPhoto: "coding"
-        },
-        {
-          title: "This is a Sample Title",
-          info: "Sample descrition goes here",
-          coverPhoto: "designed-for-everyone"
-        },
-      ],
-    }
-  },
   computed: {
+    aboutMePost() {
+      return this.$store.getters.aboutMePost;
+    },
     blogPostsFeed() {
       return this.$store.getters.blogPostsFeed;
     },
     blogPostsCards() {
       return this.$store.getters.blogPostsCards;
     }
-  }
+  },
+  mounted() {
+    
+    let esvScript = document.createElement('script')
+    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    document.body.appendChild(esvScript)
+  },
 };
 </script>
 
