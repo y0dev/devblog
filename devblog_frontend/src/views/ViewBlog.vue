@@ -5,14 +5,18 @@
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
       <img :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content ql-editor" v-html="this.blogHtml"></div>
+      <!-- <LinkCard /> -->
+      <!-- :link="aboutMePost" -->
     </div>
   </div>
 </template>
 
 <script>
 import { getIframes } from '../helpers'
+// import LinkCard from '../components/LinkCard.vue'
 export default {
   name: "ViewBlog",
+  // components: { LinkCard },
   data() {
     return {
       currentBlog: null,
@@ -24,11 +28,38 @@ export default {
       return post.blogID === this.$route.params.blogid;
     });
     this.blogHtml = await getIframes(this.currentBlog[0].blogInfo)
-
+    this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
+    .then(() => {
+      console.log('Done')
+    })
+    .catch(() => {
+      console.log('Failed')
+    });
     let esvScript = document.createElement('script')
     esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
     document.body.appendChild(esvScript)
   },
+  //insert the following code for vue-meta to work
+  metaInfo() {
+    let description = 'I would like to welcome you all to my blog. This is were I share what I am or have read. Along with my thoughts on what going on in the church and our view on this world. Hope you would share this site and come again!';
+    let image = 'https://firebasestorage.googleapis.com/v0/b/devblog-322120.appspot.com/o/photos%2Flogo.png?alt=media&token=35466416-7b85-4627-830f-c60567e02e61';
+    return { 
+      meta: [
+        { name: 'description', content:  description},
+        { name: 'author', content:  'Devontae Reid'},
+        { property: 'og:title', content: document.title},
+        { property: 'og:image', content: image},
+        { property: 'og:url', content: 'https://devssite.net/'},
+        { property: 'og:site_name', content: 'Devssite'},
+        {property: 'og:type', content: 'website'},
+        { property: 'twitter:title', content: document.title},
+        { property: 'twitter:description', content: description}, 
+        { property: 'twitter:image', content: image},       
+        { property: 'twitter:site', content: '@_yodev_'},      
+        {name: 'robots', content: 'index,follow'} 
+      ]
+    }
+  }
 };
 </script>
 

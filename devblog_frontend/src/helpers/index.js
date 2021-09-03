@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+// const request = require('request');
 
 String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
@@ -57,8 +58,50 @@ const getIframes = (html) => {
 
 */
 
+const getLinkInfo = (link) => {
+  let linkInfo = {};
+    return new Promise((resolve) => {
+        let domain = (new URL(link));
+        console.log(domain)
+        let newLink = 'http://www.whateverorigin.org/get?url=' + encodeURIComponent(domain.origin) + domain.pathname
+        fetch(newLink, {
+            method: 'GET',
+            mode: "no-cors",
+        })
+        .then(response => response.text())
+        .then(function (html) {
+
+            // Convert the HTML string into a document object
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            console.log(doc)
+        
+        })
+        .catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+        });
+        resolve(linkInfo);
+    //   request(link, async (_err, _response, html) => {
+    //     console.log(html)
+    //     let domain = (new URL(link));
+    //     const dom = cheerio.load(html);
+    //     linkInfo = {
+    //         title: dom('title').text(),
+    //         hostname: domain.hostname,
+    //         keywords: dom("meta[name='Keywords']").attr('content') || dom("meta[name='keywords']").attr('content'),
+    //         metaDescription: dom("meta[property='og:description']").attr('content') || dom("meta[name='Description']").attr('content'),
+    //         image: dom("meta[property='og:image']").attr('content'),
+    //         site_name: dom("meta[property='og:site_name']").attr('content'),
+    //     };
+    //     resolve(linkInfo);
+    // });
+  });
+}
+
 export {
     getVideoId_YT,
     getIframes,
     getYouTubeThumbnail,
+    getLinkInfo,
   }

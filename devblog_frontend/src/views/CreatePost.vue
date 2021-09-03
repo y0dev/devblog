@@ -274,19 +274,18 @@ export default {
   }
   .blog-info {
     
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 32px;
-    input:nth-child(1) {
-      min-width: 300px;
-    }
-
-    .category {
-      position: relative;
-      margin: 0 20px;
-      align-items: center;
+    @media (max-width: 768) {
+      display: none;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr;
     }
     .upload-file {
-      flex: 1;
       margin-left: 16px;
       position: relative;
       display: flex;
