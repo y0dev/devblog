@@ -3,31 +3,41 @@
     <div class="container quillWrapper">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <img :src="this.currentBlog[0].blogCoverPhoto" alt="" />
+      <VideoFrame v-if="this.videos" :videos="this.videos"/>
+      <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content ql-editor" v-html="this.blogHtml"></div>
-      <!-- <LinkCard /> -->
+      <!-- <LinkCard v-show="this.blogHtml" /> -->
+      <!-- link="https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html"/> -->
       <!-- :link="aboutMePost" -->
     </div>
   </div>
 </template>
 
 <script>
-import { getIframes } from '../helpers'
+import { getiframes,wrapiframes } from '../helpers'
 // import LinkCard from '../components/LinkCard.vue'
+import VideoFrame from '../components/VideoFrame.vue'
 export default {
   name: "ViewBlog",
-  // components: { LinkCard },
+  components: { 
+    // LinkCard,
+    VideoFrame 
+  },
   data() {
     return {
       currentBlog: null,
       blogHtml: '',
+      videos:null,
     };
   },
   async mounted() {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
       return post.blogID === this.$route.params.blogid;
     });
-    this.blogHtml = await getIframes(this.currentBlog[0].blogInfo)
+    this.videos = await getiframes(this.currentBlog[0].blogInfo);
+    console.log(this.videos)
+    this.blogHtml = await wrapiframes(this.currentBlog[0].blogInfo)
+    console.log(this.blogHtml)
     this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
     .then(() => {
       console.log('Done')
@@ -63,7 +73,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .post-view {
   h4 {
     font-weight: 400;

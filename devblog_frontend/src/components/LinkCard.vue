@@ -1,13 +1,13 @@
 <template>
     <div class="linkcard-container flex my-1">
-        <img src="../assets/logo.png" alt="">
+        <img class="website-img" src="../assets/logo.png" alt="">
         <div class="info grid info-grid">
-            <h5 class="">Title</h5>
+            <h5 class="webpage-title">Title</h5>
             <div class="description">
-                <p class="sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, consequatur. Minima cum modi ex possimus voluptas. Delectus aut eius tempore?</p>
+                <p class="info sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, consequatur. Minima cum modi ex possimus voluptas. Delectus aut eius tempore?</p>
                 <div class="url-link">
                     <Chain class="chain" />
-                    <a href="#" class="link">Some Link</a>
+                    <a :href="this.link" class="link">Some Link</a>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-// import { getLinkInfo } from '../helpers';
+import { getLinkInfo } from '../helpers';
 import Chain from "../assets/icons/link-light.svg";
 export default {
   name: "LinkCard",
@@ -24,8 +24,22 @@ export default {
     Chain
   },
   async mounted() {
-    //   const info = await getLinkInfo('https://developpaper.com/the-method-of-introducing-external-js-file-into-vue-component/');
-    //   console.log(info);
+      if(this.link) {
+        const info = await getLinkInfo( this.link);
+        console.log(info)
+        let img = document.getElementsByClassName('website-img')[0];
+        let title = document.getElementsByClassName('webpage-title')[0];
+        let description = document.getElementsByClassName('description');
+        let paragraph = description[0].children[0]
+        let websiteTitle = description[0].children[1].children[1];
+
+
+        img.src = (info.image) ? info.image : '../assets/logo.png';
+        title.textContent = info.title;
+        paragraph.textContent = info.metaDescription;
+        websiteTitle.textContent =info.hostname;
+      }
+      //https://developpaper.com/the-method-of-introducing-external-js-file-into-vue-component
   },
 };
 </script>

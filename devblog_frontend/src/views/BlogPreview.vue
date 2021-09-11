@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getIframes } from '../helpers';
+import { wrapiframes } from '../helpers';
 export default {
   name: "PostPreview",
   data() {
@@ -18,7 +18,7 @@ export default {
     }
   },
   async mounted() {
-    this.blogHtml = await getIframes(this.$store.state.blogInfo)
+    this.blogHtml = await wrapiframes(this.$store.state.blogInfo)
   },
   destroyed() {
     console.log(this.$store.state.blogInfo)

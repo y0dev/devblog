@@ -43,7 +43,7 @@ const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/ImageResize", ImageResize);
 
 import { storage, postsCollection } from '../firebase'
-import { getYouTubeThumbnail, getVideoId_YT } from '../helpers';
+import { getYouTubeThumbnail, getVideoId_YT,getLinksInText } from '../helpers';
 export default {
   name:"CreatePost",
   components: {
@@ -105,7 +105,8 @@ export default {
     async textHandler(delta, oldDelta, source) {
       if(source) {
         const text = this.blogInfo;
-        
+        console.log(text)
+        getLinksInText(text)
         if(text.includes("youtube.com/embed") && !this.file) {
 
 

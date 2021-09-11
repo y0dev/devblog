@@ -1,9 +1,28 @@
 const cheerio = require('cheerio');
-// const request = require('request');
+const request = require('request');
 
 String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
+function getLinksInText(html) {
+    return new Promise((resolve) => {
+        const dom = cheerio.load(html);
+        const paragraphs = dom('p');
+        for (const para of paragraphs) {
+            console.log(para.children.data)
+        }
+        //console.log(dom.html())
+        resolve(dom.html());
+    });
+}
+// function urlify(text) {
+//     var urlRegex = /(https?:\/\/[^\s]+)/g;
+//     return text.replace(urlRegex, function(url) {
+//       return '<a href="' + url + '">' + url + '</a>';
+//     })
+//     // or alternatively
+//     // return text.replace(urlRegex, '<a href="$1">$1</a>')
+// }
 
 function getVideoId_YT(text) {
     let startingIdx = text.indexOf("youtube.com/embed") + "youtube.com/embed".length + 1
@@ -42,14 +61,56 @@ function getYouTubeThumbnail(videoId) {
         });
     });
 }
-const getIframes = (html) => {
+function getYouTubeInfo(videoId) {
+    return new Promise((resolve) => {
+        fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=contentDetails&part=snippet&id=${videoId}`, {
+        method: "GET",
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const item0 = data.items[0];
+            const snippet = item0.snippet;
+            let images = getImages(snippet.thumbnails);
+            let videoInfo = {
+                title: snippet.title,
+                image: images[images.length - 1],
+                duration: item0.contentDetails.duration,
+            }
+            resolve(videoInfo)
+        });
+        
+    });
+}
+const wrapiframes = (html) => {
     return new Promise((resolve) => {
         const dom = cheerio.load(html);
         const iframes = dom('iframe.ql-video');
-        iframes.wrap('<div class=\'video-view\'></div>')
-        //console.log(dom.html())
+        iframes.remove();
+        // iframes.wrap('<div class=\'video-view\'></div>')
         resolve(dom.html());
     });
+};
+
+const getiframes = async (html) => {
+    const dom = cheerio.load(html);
+    let videos = []
+    const iframes = dom('iframe.ql-video');
+    for (var iframe of iframes) {
+        let video = {
+            src: iframe.attribs.src,
+        }
+        if (!iframe.attribs.src.includes('vimeo.com')) {
+            const info = await getYouTubeInfo(getVideoId_YT(iframe.attribs.src));
+            video.host = 'Youtube';
+            video.info = info ? info : {};
+        } else {
+            console.log('Need to implement for Vimeo')
+        }
+        videos.push(video)
+    }
+    console.log(videos)
+    return videos
 };
 
 /*
@@ -59,49 +120,31 @@ const getIframes = (html) => {
 */
 
 const getLinkInfo = (link) => {
-  let linkInfo = {};
+    let linkInfo = {};
+    var cors_api_host = 'cors-anywhere.herokuapp.com';
+    var cors_api_url = 'https://' + cors_api_host + '/';
     return new Promise((resolve) => {
+      request(cors_api_url+ link, async (_err, _response, html) => {
         let domain = (new URL(link));
-        console.log(domain)
-        let newLink = 'http://www.whateverorigin.org/get?url=' + encodeURIComponent(domain.origin) + domain.pathname
-        fetch(newLink, {
-            method: 'GET',
-            mode: "no-cors",
-        })
-        .then(response => response.text())
-        .then(function (html) {
-
-            // Convert the HTML string into a document object
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(html, 'text/html');
-            console.log(doc)
-        
-        })
-        .catch(function (err) {
-            // There was an error
-            console.warn('Something went wrong.', err);
-        });
+        const dom = cheerio.load(html);
+        linkInfo = {
+            title: dom('title').text(),
+            hostname: domain.hostname,
+            keywords: dom("meta[name='Keywords']").attr('content') || dom("meta[name='keywords']").attr('content'),
+            metaDescription: dom("meta[property='og:description']").attr('content') || dom("meta[name='Description']").attr('content'),
+            image: dom("meta[property='og:image']").attr('content'),
+            site_name: dom("meta[property='og:site_name']").attr('content'),
+        };
         resolve(linkInfo);
-    //   request(link, async (_err, _response, html) => {
-    //     console.log(html)
-    //     let domain = (new URL(link));
-    //     const dom = cheerio.load(html);
-    //     linkInfo = {
-    //         title: dom('title').text(),
-    //         hostname: domain.hostname,
-    //         keywords: dom("meta[name='Keywords']").attr('content') || dom("meta[name='keywords']").attr('content'),
-    //         metaDescription: dom("meta[property='og:description']").attr('content') || dom("meta[name='Description']").attr('content'),
-    //         image: dom("meta[property='og:image']").attr('content'),
-    //         site_name: dom("meta[property='og:site_name']").attr('content'),
-    //     };
-    //     resolve(linkInfo);
-    // });
+    });
   });
 }
 
 export {
     getVideoId_YT,
-    getIframes,
+    getiframes,
     getYouTubeThumbnail,
     getLinkInfo,
+    getLinksInText,
+    wrapiframes,
   }

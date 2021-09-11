@@ -2,7 +2,7 @@
   <header>
     <nav class="nav-container">
       <div class="branding">
-        <router-link class="header" :to="{ name: 'Home' }">DevBlog</router-link>
+        <router-link class="header" :to="{ name: 'Home' }"><img src="../assets/logo/devontaereid_blk.png" alt=""></router-link>
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
@@ -60,7 +60,7 @@ export default {
   components: {
     menuIcon,
     userIcon,
-        signOutIcon
+    signOutIcon
   },
   data() {
     return {
@@ -134,13 +134,20 @@ header {
     .branding {
       display: flex;
       align-items: center;
+      .header{
+        img{
+          width: 50%;
+          @media (min-width: 410px) {
+            width: 100%;
+          }
+        }
 
-      .header {
-        font-weight: 600;
-        font-size: 24px;
-        color: #000000;
-        text-decoration: none;
       }
+      // .logo {
+      //   width:100%;
+      //   color: #000000;
+      //   text-decoration: none;
+      // }
     }
 
     .nav-links {

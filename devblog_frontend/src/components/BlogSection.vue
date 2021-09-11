@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-card-wrap">
+    <div class="blog-card-container">
         <h2>{{ title }}</h2>
         <div class="blog-cards container">
             <BlogCard :post="post" v-for="(post,index) in blogPosts" :key="index" />
@@ -19,9 +19,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.blog-card-container{
+  margin: 0 50px;
+  padding-bottom: 50px;
+}
 h2 {
     position: relative;
-    margin-left: 20px;
     text-transform: uppercase;
 }
 .blog-cards {
