@@ -41,9 +41,9 @@ export default {
   mounted() {
     this.showSlides(this.currentIndex);
     
-    let esvScript = document.createElement('script')
-    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
-    document.body.appendChild(esvScript)
+    // let esvScript = document.createElement('script')
+    // esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    // document.body.appendChild(esvScript)
   },
   created() {
   },

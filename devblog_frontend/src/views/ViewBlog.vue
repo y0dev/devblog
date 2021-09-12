@@ -37,16 +37,16 @@ export default {
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
     this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo)
     
-    this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
-    .then(() => {
-      console.log('Done')
-    })
-    .catch(() => {
-      console.log('Failed')
-    });
-    let esvScript = document.createElement('script')
-    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
-    document.body.appendChild(esvScript)
+    // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
+    // .then(() => {
+    //   console.log('Done')
+    // })
+    // .catch(() => {
+    //   console.log('Failed')
+    // });
+    // let esvScript = document.createElement('script')
+    // esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
+    // document.body.appendChild(esvScript)
   },
 };
 </script>
