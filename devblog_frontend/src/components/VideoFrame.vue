@@ -94,7 +94,9 @@ export default {
 
 .overlay{
   background-color: rgba(0, 0, 0, 0.35);
+  width: 100%;
   height: 100%;
+  padding: 0 20px;
   align-items: center;
   justify-content: center;
   text-align: center;

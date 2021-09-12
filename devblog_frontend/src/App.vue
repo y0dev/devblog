@@ -76,6 +76,10 @@ export default {
   margin: 0 auto;
 }
 
+ol,ul{
+  padding: 20px 40px;
+}
+
 .link {
   cursor: pointer;
   text-decoration: none;
@@ -176,4 +180,5 @@ button,
     }
   }
 }
+
 </style>

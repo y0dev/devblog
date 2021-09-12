@@ -5,7 +5,6 @@ import router from "./router";
 import store from "./store";
 import { auth } from './firebase';
 import Vue2Editor from "vue2-editor";
-import VueMeta from 'vue-meta';
 
 const path = require("path");
 require("dotenv").config({
@@ -13,7 +12,6 @@ require("dotenv").config({
 });
 
 Vue.use(Vue2Editor);
-Vue.use(VueMeta);
 
 Vue.config.productionTip = false;
 

@@ -1,24 +1,33 @@
 <template>
   <div class="post-view">
-    <div class="container quillWrapper">
+    <div class="container">
       <h2>{{ this.blogTitle }}</h2>
-      <img :src="blogCoverPhoto" alt="" />
-      <div class="post-content ql-editor" v-html="this.blogHtml"></div>
+      <VideoFrame v-if="this.videos" :videos="this.videos"/>
+      <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
+      <div class="post-content" v-html="this.blogHtml"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { wrapiframes } from '../helpers';
+import { getiframes,formatHtml } from '../helpers'
+// import LinkCard from '../components/LinkCard.vue'
+import VideoFrame from '../components/VideoFrame.vue'
 export default {
   name: "PostPreview",
+  components: { 
+    // LinkCard,
+    VideoFrame 
+  },
   data() {
     return {
-      blogHtml: ''
+      blogHtml: '',
+      videos:null,
     }
   },
   async mounted() {
-    this.blogHtml = await wrapiframes(this.$store.state.blogInfo)
+    this.videos = await getiframes(this.currentBlog[0].blogInfo);
+    this.blogHtml = await formatHtml(this.$store.state.blogInfo)
   },
   destroyed() {
     console.log(this.$store.state.blogInfo)
@@ -30,26 +39,6 @@ export default {
     blogCoverPhoto() {
       return this.$store.state.blogPhotoFileURL;
     },
-  },
-  metaInfo() {
-    let description = 'I would like to welcome you all to my blog. This is were I share what I am or have read. Along with my thoughts on what going on in the church and our view on this world. Hope you would share this site and come again!';
-    let image = 'https://firebasestorage.googleapis.com/v0/b/devblog-322120.appspot.com/o/photos%2Flogo.png?alt=media&token=35466416-7b85-4627-830f-c60567e02e61';
-    return { 
-      meta: [
-        { name: 'description', content:  description},
-        { name: 'author', content:  'Devontae Reid'},
-        { property: 'og:title', content: document.title},
-        { property: 'og:image', content: image},
-        { property: 'og:url', content: 'https://devssite.net/'},
-        { property: 'og:site_name', content: 'Devssite'},
-        {property: 'og:type', content: 'website'},
-        { property: 'twitter:title', content: document.title},
-        { property: 'twitter:description', content: description}, 
-        { property: 'twitter:image', content: image},       
-        { property: 'twitter:site', content: '@_yodev_'},      
-        {name: 'robots', content: 'index,follow'} 
-      ]
-    }
   }
 };
 </script>
@@ -78,17 +67,23 @@ export default {
     margin-bottom: 32px;
   }
 
-  .video-view {
-    position:relative;
-    padding:56.25% 0 0 0;
+  // .video-view {
+  //   position:relative;
+  //   padding:56.25% 0 0 0;
 
-    iframe {
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-    }
+  //   iframe {
+  //       position:absolute;
+  //       top:0;
+  //       left:0;
+  //       width:100%;
+  //       height:100%;
+  //   }
+  // }
+
+  
+  a.esv-crossref-link {
+    color: #72abbf !important;
   }
 }
+
 </style>

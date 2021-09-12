@@ -82,11 +82,15 @@ function getYouTubeInfo(videoId) {
         
     });
 }
-const wrapiframes = (html) => {
+const formatHtml = (html) => {
     return new Promise((resolve) => {
         const dom = cheerio.load(html);
         const iframes = dom('iframe.ql-video');
         iframes.remove();
+
+        const ol = dom('ol');
+        ol.addClass('list')
+        console.log(ol)
         // iframes.wrap('<div class=\'video-view\'></div>')
         resolve(dom.html());
     });
@@ -146,5 +150,5 @@ export {
     getYouTubeThumbnail,
     getLinkInfo,
     getLinksInText,
-    wrapiframes,
+    formatHtml,
   }

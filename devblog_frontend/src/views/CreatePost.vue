@@ -275,12 +275,15 @@ export default {
   }
   .blog-info {
     
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    
     gap: 20px;
     justify-content: center;
     align-items: center;
     margin-bottom: 32px;
+    @media (min-width: 500px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
     @media (max-width: 768) {
       display: none;
       grid-template-rows: 1fr;
