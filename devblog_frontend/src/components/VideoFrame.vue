@@ -124,8 +124,8 @@ export default {
   top: 0;
 }
 
-img {
-    margin-bottom: 0;
+.picture img {
+  margin-bottom: -5px;
 }
 
 iframe{

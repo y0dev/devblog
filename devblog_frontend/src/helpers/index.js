@@ -82,6 +82,15 @@ function getYouTubeInfo(videoId) {
         
     });
 }
+
+const formatHtmlForBlogPost = (html) => {
+    const dom = cheerio.load(html);
+
+    const p = dom('p');
+    p[0].attribs.style = 'width: 250px; overflow: hidden; text-overflow: ellipsis;';
+    return dom.html();
+};
+
 const formatHtml = (html) => {
     return new Promise((resolve) => {
         const dom = cheerio.load(html);
@@ -151,4 +160,5 @@ export {
     getLinkInfo,
     getLinksInText,
     formatHtml,
+    formatHtmlForBlogPost,
   }

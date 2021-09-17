@@ -5,7 +5,7 @@
         <h2 v-if="post.title">{{ post.title }}</h2>
         <h2 v-else>{{ post.blogTitle }}</h2>
         <p v-if="post.title">{{post.info}}</p>
-        <p class="content-preview" v-else v-html="post.blogInfo"></p>
+        <p class="content-preview" v-else v-html="blogInfo"></p>
         <router-link class="link link-light" v-if="post.title" :to="{ name: 'ViewAboutMe' }">
           Learn More<Arrow class="arrow arrow-light" />
         </router-link>
@@ -38,15 +38,14 @@
         </div>
         <br>
       </div>
-      <div v-else :src="post.blogCoverPhoto" class="post-img">
-        <img class="photo" :src="post.blogCoverPhoto" alt="" />
-      </div>
+      <img class="photo" :src="post.blogCoverPhoto" alt="" />
     </div>
   </div>
 </template>
 
 <script>
 import Arrow from "../assets/icons/arrow-right-light.svg";
+import { formatHtmlForBlogPost } from '../helpers';
 export default {
   name: "blogPost",
   props: ["post"],
@@ -57,7 +56,8 @@ export default {
     return {
       images:null,
       timer:null,
-      currentIndex: 1
+      currentIndex: 1,
+      blogInfo: null,
     }
   },methods: {
     plusSlides(n) {
@@ -87,6 +87,7 @@ export default {
     this.images = (this.post.title) ? this.post.photos : 0;
   },
   mounted() {
+    this.blogInfo = formatHtmlForBlogPost(this.post.blogInfo)
     this.showSlides(this.currentIndex);
   }, 
   computed: {
@@ -153,11 +154,17 @@ export default {
       .content-preview {
         font-size: 13px;
         max-height: 24px;
-        width: 250px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .content-preview p {
+        background-color: #000000;
+        width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
 
       .link {
         display: inline-flex;
