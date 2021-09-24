@@ -2,29 +2,14 @@
   <article>
     <h2>A Glisp of Who I Am</h2>
     <p>
-      I am a Embeded Software Engineer Front-End Developer with experience in building responsive websites
+      I am a Software Engineer currently working in embedded system. I started off in college as a Front-End Developer with experience in building responsive websites
       while keeping the aesthetic integrity. Proficient in semantic
-      <span
-        ref="reactive"
-        @mouseenter="reactiveHighlight"
-        @mouseleave="reactiveHighlightRemove"
-        >HTML, CSS, JavaScript</span
-      >
+      <span ref="reactive" @mouseenter="reactiveHighlight" @mouseleave="reactiveHighlightRemove">HTML, CSS, JavaScript</span>
       and modern frameworks like
-      <span
-        ref="gdesign"
-        @mouseenter="gHighlight"
-        @mouseleave="gHighlightRemove"
-        >VueJs</span
-      >
+      <span ref="gdesign" @mouseenter="gHighlight" @mouseleave="gHighlightRemove">VueJs</span>
       . Always puts effort in making User Interface beautiful and practical with
       tools like
-      <span
-        ref="uidesign"
-        @mouseenter="uiHighlight"
-        @mouseleave="uiHighlightRemove"
-        >Photoshop, Illustrator and Figma</span
-      >
+      <span ref="uidesign" @mouseenter="uiHighlight" @mouseleave="uiHighlightRemove">Photoshop, Illustrator and Figma</span>
       .
     </p>
     <p>
@@ -34,16 +19,13 @@
     </p>
     <ul>
       <li>
-        <img src="../assets/icons/js.svg" alt="javascipt" />
+        <VueJS class="icon" />
       </li>
       <li>
-        <img src="../assets/icons/vue.svg" alt="vuejs" />
+        <NodeJS class="icon" />
       </li>
       <li>
-        <img src="../assets/icons/nodejs.svg" alt="nodejs" />
-      </li>
-      <li>
-        <img src="../assets/icons/photoshop.svg" alt="photoshop" />
+        <Python class="icon" />
       </li>
       <li>
         <a :href="pdf" download>
@@ -55,12 +37,20 @@
 </template>
 
 <script>
+// import JavaScript from "../assets/icons/js.svg";
+import VueJS from "../assets/icons/vuejs.svg";
+import NodeJS from "../assets/icons/nodejs.svg";
+import Python from "../assets/icons/python.svg";
 import { TimelineLite } from "gsap/dist/gsap";
 export default {
   name: "Description",
+  components: {
+    // JavaScript,
+     VueJS,NodeJS, Python
+  },
   data() {
     return {
-      pdf: require('../assets/background.jpg'),
+      pdf: require('../assets/devontae_resume.pdf'),
     };
   },
   methods: {
@@ -117,7 +107,7 @@ export default {
 </script>
 
 <style scoped>
-/* p {
+p {
   font-size: clamp(16px, 1.2vw, 1.2vw);
   line-height: 2;
   color: #9d9d9d;
@@ -134,7 +124,10 @@ ul {
   display: flex;
   justify-content: space-around;
 }
-img {
+li{
+  width: 100px;
+}
+.icon {
   height: 30px;
   filter: grayscale();
   transition: filter 0.2s ease-in-out;
@@ -153,7 +146,7 @@ button:hover {
   background-color: #59ff9c;
 }
 
-img:hover {
+.icon:hover {
   filter: none;
 }
 
@@ -165,9 +158,9 @@ span {
 }
 
 @media (max-width: 700px) {
-  img,
+  .icon,
   button {
     height: 20px;
   }
-} */
+}
 </style>

@@ -6,7 +6,14 @@ require("dotenv").config({
 module.exports = {
     chainWebpack: (config) => {
       const svgRule = config.module.rule("svg");
-  
+      
+      // PDF File Loader
+      config.module
+      .rule("pdf")
+      .test(/\.pdf$/)
+      .use("file-loader")
+      .loader("file-loader");
+    
       svgRule.uses.clear();
   
       svgRule
@@ -15,6 +22,7 @@ module.exports = {
         .end()
         .use("vue-svg-loader")
         .loader("vue-svg-loader");
+        
     },
     devServer : {
       port: process.env.PORT,
