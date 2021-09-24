@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import BlogHome from "../views/BlogHome.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login.vue";
 import Profile from "../views/Profile.vue";
@@ -15,90 +16,99 @@ import {auth} from '../firebase'
 Vue.use(VueRouter);
 
 const routes = [
-    {
-      path:"/",
-      name: "Home",
-      component: Home,
-      meta: {
-          title: "Home",
-          requiresAuth: false,
-      },
+  {
+    path:"/",
+    name: "Home",
+    component: Home,
+    meta: {
+        title: "Home",
+        requiresAuth: false,
     },
-    {
-      path:"/blogs",
-      name: "Blogs",
-      component: Blogs,
-      meta: {
-          title: "Blogs",
-          requiresAuth: false,
-      },
+  },
+  {
+    path:"/blogs",
+    name: "BlogHome",
+    component: BlogHome,
+    meta: {
+        title: "BlogHome",
+        requiresAuth: false,
     },
-    {
-      path:"/login",
-      name: "Login",
-      component: Login,
-      meta: {
-          title: "Login",
-          requiresAuth: false,
-      },
+  },
+  {
+    path:"/blogs/all",
+    name: "Blogs",
+    component: Blogs,
+    meta: {
+        title: "Blogs",
+        requiresAuth: false,
     },
-    {
-      path: "/profile",
-      name: "Profile",
-      component: Profile,
-      meta: {
-        title: "Profile",
+  },
+  {
+    path:"/login",
+    name: "Login",
+    component: Login,
+    meta: {
+        title: "Login",
+        requiresAuth: false,
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    meta: {
+      title: "Profile",
+      requiresAuth: true,
+    },
+  },
+  {
+    path:"/post",
+    name: "CreatePost",
+    component: CreatePost,
+    meta: {
+        title: "Create Post",
         requiresAuth: true,
-      },
+        requiresAdmin: false,
     },
-    {
-      path:"/post",
-      name: "CreatePost",
-      component: CreatePost,
-      meta: {
-          title: "Create Post",
-          requiresAuth: true,
-          requiresAdmin: false,
-      },
+  },
+  {
+    path:"/post",
+    name: "BlogPreview",
+    component: BlogPreview,
+    meta: {
+        title: "Preview Blog Post",
+        requiresAuth: true,
+        requiresAdmin: false,
     },
-    {
-      path:"/post",
-      name: "BlogPreview",
-      component: BlogPreview,
-      meta: {
-          title: "Preview Blog Post",
-          requiresAuth: true,
-          requiresAdmin: false,
-      },
+  },
+  {
+    path:"/v=:blogid",
+    name: "ViewBlog",
+    component: ViewBlog,
+    meta: {
+        title: "View Blog Post",
+        requiresAuth: false,
     },
-    {
-      path:"/v=:blogid",
-      name: "ViewBlog",
-      component: ViewBlog,
-      meta: {
-          title: "View Blog Post",
-          requiresAuth: false,
-      },
+  },
+  {
+    path:"/aboutme",
+    name: "ViewAboutMe",
+    component: ViewAboutMe,
+    meta: {
+        title: "About Me",
+        requiresAuth: false,
     },
-    {
-      path:"/aboutme",
-      name: "ViewAboutMe",
-      component: ViewAboutMe,
-      meta: {
-          title: "About Me",
-          requiresAuth: false,
-      },
+  },
+  {
+    path:"/edit/v=:blogid",
+    name: "EditBlog",
+    component: EditBlog,
+    meta: {
+        title: "Edit Blog Post",
+        requiresAuth: true,
+        requiresAdmin: false,
     },
-    {
-      path:"/edit/v=:blogid",
-      name: "EditBlog",
-      component: EditBlog,
-      meta: {
-          title: "Edit Blog Post",
-          requiresAuth: true,
-          requiresAdmin: false,
-      },
-    },
+  },
 ]
 
 const router = new VueRouter({
