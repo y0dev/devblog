@@ -1,12 +1,14 @@
 <template>
   <div class="blog-home">
-    <BlogPost :post="aboutMePost" />
     <BlogPost :post="post" v-for="(post,index) in blogPostsFeed" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
-        <h3>View More Recent Blogs</h3>
+        <div class="blog-card-container">
+          <h3>View More Recent Blogs</h3>
+          <router-link class="link" :to="{ name: 'Blogs' }">View All</router-link>
+        </div>
         <div class="blog-cards">
-          <BlogCard :post="post" v-for="(post,index) in blogPostsCards" :key="index" />
+          <BlogCard :post="post" v-for="(post,index) in blogPostsCards" :key="index" />     
         </div>
       </div>
     </div>
@@ -45,7 +47,12 @@ export default {
 
 <style lang="scss" scoped>
 .blog-card-wrap {
-  h3 {
+  .container .blog-card-container {
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    align-content: center;
+  }
+  .container .blog-card-container h3 {
     font-weight: 300;
     font-size: 28px;
     margin-bottom: 32px;

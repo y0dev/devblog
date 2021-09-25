@@ -1,108 +1,132 @@
 <template>
-  <article>
-  </article>
+  <div class="work-container">
+    <h1>Work</h1>
+    <ul class="criteria-list">
+      <li v-for="item in criteria" :key="item">
+        <FilterTags
+          v-on:clicked="criteriaSeletion"
+          :type="item"
+          :state="selectedType === item"
+        />
+      </li>
+    </ul>
+    <div
+      class="project-holder"
+      v-for="project in filterProject"
+      :key="project.index"
+    >
+      <ProjectModule
+        v-on:emitImage="imagePreview"
+        :title="Object.keys(project).toString()"
+        :preview="project[Object.keys(project).toString()].preview_links"
+        :type="project[Object.keys(project).toString()].category"
+        :read="project[Object.keys(project).toString()].article"
+        :coverImage="project[Object.keys(project).toString()].image"
+        :content="project[Object.keys(project).toString()].content"
+        class="module"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
 import { TimelineLite } from "gsap/dist/gsap";
+
+import ProjectModule from "../components/ProjectModule";
+import FilterTags from "../components/FilterTags";
+
+import project from "../assets/projectData";
 export default {
   name: "Work",
   components: {
+    ProjectModule,
+    FilterTags,
+  },
+  data() {
+    return {
+      selectedType: "Favorites",
+      criteria: ["Favorites", "Programming", "Theology"],
+    };
   },
   methods: {
-    reactiveHighlight() {
-      const tl = new TimelineLite();
-      const { reactive } = this.$refs;
-      tl.to(reactive, {
-        backgroundColor: "#1a1a1a",
-        color: "white",
+    criteriaSeletion(type) {
+      this.selectedType = type;
+    },
+    imagePreview(e) {
+      this.$emit('emitImage', e)
+    }
+  },
+  computed: {
+    filterProject() {
+      return project.filter((pr) => {
+        if (this.selectedType === "Favorites") {
+          return pr[Object.keys(pr).toString()].favorite === this.selectedType;
+        }
+        return pr[Object.keys(pr).toString()].category === this.selectedType;
       });
     },
-    reactiveHighlightRemove() {
+  },
+  watch: {
+    selectedType: function () {
+      const project = document.querySelector(".project-holder").firstChild;
       const tl = new TimelineLite();
-      const { reactive } = this.$refs;
-      tl.to(reactive, {
-        backgroundColor: "#141414",
-        color: "#8d8d8d",
-      });
-    },
-    gHighlight() {
-      const tl = new TimelineLite();
-      const { gdesign } = this.$refs;
-      tl.to(gdesign, {
-        backgroundColor: "#1a1a1a",
-        color: "white",
-      });
-    },
-    gHighlightRemove() {
-      const tl = new TimelineLite();
-      const { gdesign } = this.$refs;
-      tl.to(gdesign, {
-        backgroundColor: "#141414",
-        color: "#8d8d8d",
+
+      tl.from(project, {
+        y: 200,
+        duration: 0.4,
+        opacity: 0,
       });
     },
   },
 };
 </script>
-
 <style scoped>
-p {
-  font-size: clamp(16px, 1.2vw, 1.2vw);
-  line-height: 2;
-  color: #9d9d9d;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: clamp(24px, 3vw, 3vw);
-  font-weight: 300;
-  margin: 0;
-}
-ul {
-  margin-top: 10px;
-  list-style-type: none;
+.work-container {
   display: flex;
-  justify-content: space-around;
+  flex-flow: column;
   align-items: center;
 }
-li{
-  width: 100px;
+
+h1 {
+  font-size: 72px;
+  color: #FFFFFF;
+  padding: 30px 0;
 }
-.icon {
-  height: 30px;
-  filter: grayscale();
-  transition: filter 0.2s ease-in-out;
-}
-button {
-  height: 30px;
-  border: none;
-  font-size: 18px;
-  font-weight: 900;
-  background-color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+.module {
+  margin-bottom: 10em;
+  transition: box-shadow 0.4s ease-in-out;
 }
 
-button:hover {
-  background-color: #59ff9c;
+.module:hover {
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 
-.icon:hover {
-  filter: none;
+.criteria-list {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  width: 70vw;
+  max-width: 1000px;
+  list-style-type: none;
 }
 
-span {
-  background-color: #141414;
-  margin: 0.3em;
-  padding: 0.3em 0.7em;
-  color: #8d8d8d;
+.criteria-list li {
+  margin-right: 1em;
+}
+
+.project-holder {
+  margin-top: 2em;
 }
 
 @media (max-width: 700px) {
-  .icon,
-  button {
-    height: 20px;
+  .criteria-list {
+    width: 90vw;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .criteria-list li {
+    margin-bottom: 1em;
+    font-size: 14px;
   }
 }
 </style>

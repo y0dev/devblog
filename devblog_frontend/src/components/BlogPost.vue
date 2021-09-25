@@ -338,7 +338,7 @@ export default {
   }
 }
 
-.about-me:first-child {
+.about-me:nth-child(odd) {
   .blog-content {
     background-color: #303030;
     color: #FFF;

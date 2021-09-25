@@ -51,10 +51,10 @@ export default new Vuex.Store({
       return state.aboutMe[0];
     },
     blogPostsFeed(state) {
-      return state.blogPosts.slice(0,2);
+      return state.blogPosts.slice(0,3);
     },
     blogPostsCards(state) {
-      return state.blogPosts.slice(2,6);
+      return state.blogPosts.slice(3,6);
     }  
   },
   mutations: {

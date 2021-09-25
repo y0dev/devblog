@@ -27,7 +27,7 @@
       <a href="https://www.gty.org/">Grace To You</a>, and 
       <a href="https://www.truthforlife.org/">Truth for Life</a></span>.
     </p>
-    <ul>
+    <ul class="grid">
       <li>
         <VueJS class="icon" />
       </li>
@@ -49,7 +49,7 @@
 <script>
 // import JavaScript from "../assets/icons/js.svg";
 import VueJS from "../assets/icons/vuejs.svg";
-import NodeJS from "../assets/icons/nodejs.svg";
+import NodeJS from "../assets/icons/node.svg";
 import Python from "../assets/icons/python.svg";
 import { TimelineLite } from "gsap/dist/gsap";
 export default {
@@ -137,17 +137,17 @@ a {
 ul {
   margin-top: 10px;
   list-style-type: none;
-  display: flex;
-  justify-content: space-evenly;
+  grid-template-columns: repeat(4,1fr);
   flex-flow: row nowrap;
   height: 100px;
-  align-items: center;
+  justify-content: center;
+  align-content: center;
 }
 li{
-  justify-content: center;
 }
 .icon {
-  height: 30px;
+  height: 40px;
+  width: 50px;
   filter: grayscale();
   transition: filter 0.5s ease-in-out;
 }
@@ -174,10 +174,14 @@ span {
   color: #8d8d8d;
 }
 
-@media (max-width: 999px) {
+@media (max-width: 749px) {
   ul {
-    flex-flow: column nowrap;
-    height: 400px;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(4,1fr);
+    margin: 0 auto;
+    margin-bottom: 50px;
+    width: 100px;
   }
+
 }
 </style>

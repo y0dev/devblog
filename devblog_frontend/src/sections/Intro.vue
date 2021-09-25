@@ -19,16 +19,23 @@ export default {
 <style scoped>
 article {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  height: 100%;
 }
 h2{
   z-index: 1;
   font-weight: 900;
+  color: #FFFFFF;
+  text-align: center;
+  margin: 0 50px;
+  font-size: calc((3.5 - 1) * 1.2vw + 1rem); 
 }
 img {
-  display: none;
-  width: 30vw;
+  /* display: none; */
+  width: 80%;
+  height: 100%;
   top: 15vh;
   left: 20px;
   opacity: 0.6;
@@ -36,15 +43,16 @@ img {
   -webkit-box-shadow: 1px 2px 3px rgba(0,0,0,.5);
   box-shadow: 1px 2px 3px rgba(0,0,0,.5);
 }
-@media screen and (min-width: 700px) {
+@media screen and (max-width: 700px) {
   article{
-    flex-direction: column;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
   }
   img {
-    display: block;
-  }
-  h2 {
-    font-size: calc((3.5 - 1) * 1.2vw + 1rem); 
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>

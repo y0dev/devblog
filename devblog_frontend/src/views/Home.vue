@@ -45,18 +45,20 @@ export default {
 #home {
   background-color: #1c1c1c;
   width: 100%;
+  section{
+    display: inline-block;
+    height: 100%;
+  }
   .intro{
-    height: 100vh;
+    background-image: url("../assets/pattern/triangles.png");
+    background-size: cover;
+    position: relative;
   }
 
   .about-me{
     background-image: url("../assets/pattern/topography.png");
     position: relative;
-    @media only screen and (min-width: 600px) {
-        height: 120vh;
-        width: 100vw;
-        overflow: auto;
-    }
+    width: 100vw;
     article{
       margin: auto;
       padding: 20vh 20vw;
@@ -67,9 +69,8 @@ export default {
     background-image: url("../assets/pattern/graph-paper.png");
     position: relative;
     @media only screen and (min-width: 600px) {
-      height: 120vh;
       width: 100vw;
-      overflow: auto;
+      overflow:initial;
     }
     article{
       margin: auto;
