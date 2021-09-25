@@ -12,8 +12,20 @@
     </p>
     <p>
       In my free time I work on cool projects while experimenting with new
-      technologies. Currently I'm working on an astronomy discord bot and a
-      chrome extension with Node, Firebase and Puppeteer.
+      technologies. Currently I'm working on an some api's that will also
+       include a chrome extension the will be written in Node and untilizing
+       DigitalOcean.
+    </p>
+    <p>
+      If I'm not programming you will find me reading my bible or spending time
+      with my family. The bible has brought me so much wisdom when it comes to life
+      along with teaching me about the grace of God. My collections of books are 
+      growing I believe I'm north of 100 books in my collection. Here's a list of
+      my study resources 
+      <span ref="gdesign" @mouseenter="uiHighlight" @mouseleave="uiHighlightRemove">
+      <a href="https://www.desiringgod.org/">Desiring God</a>, 
+      <a href="https://www.gty.org/">Grace To You</a>, and 
+      <a href="https://www.truthforlife.org/">Truth for Life</a></span>.
     </p>
     <ul>
       <li>
@@ -86,6 +98,22 @@ export default {
         color: "#8d8d8d",
       });
     },
+    uiHighlight() {
+      const tl = new TimelineLite();
+      const { uidesign } = this.$refs;
+      tl.to(uidesign, {
+        backgroundColor: "#1a1a1a",
+        color: "white",
+      });
+    },
+    uiHighlightRemove() {
+      const tl = new TimelineLite();
+      const { uidesign } = this.$refs;
+      tl.to(uidesign, {
+        backgroundColor: "#141414",
+        color: "#8d8d8d",
+      });
+    },
   },
 };
 </script>
@@ -103,32 +131,36 @@ h2 {
   font-weight: 300;
   margin: 0;
 }
+a {
+  color: #9d9d9d;
+}
 ul {
-  margin-top: clamp(3em, 4vw, 4vw);
+  margin-top: 10px;
   list-style-type: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  flex-flow: row nowrap;
+  height: 100px;
+  align-items: center;
 }
 li{
-  width: 100px;
+  justify-content: center;
 }
 .icon {
   height: 30px;
   filter: grayscale();
-  transition: filter 0.2s ease-in-out;
+  transition: filter 0.5s ease-in-out;
 }
 button {
-  height: 30px;
-  border: none;
+  margin-top: 0;
   font-size: 18px;
-  font-weight: 900;
-  background-color: white;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+  border-radius: 30px;
 }
 
 button:hover {
-  background-color: #59ff9c;
+  background-color: #59caff;
 }
 
 .icon:hover {
@@ -142,10 +174,10 @@ span {
   color: #8d8d8d;
 }
 
-@media (max-width: 700px) {
-  .icon,
-  button {
-    height: 20px;
+@media (max-width: 999px) {
+  ul {
+    flex-flow: column nowrap;
+    height: 400px;
   }
 }
 </style>

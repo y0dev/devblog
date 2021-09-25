@@ -1,17 +1,18 @@
 <template>
   <div id="home">
     <section class="intro">
-
+      <Intro />
     </section>
     <section class="about-me">
-      <Topography class="background"/>
       <AboutMe />
     </section>
     <section class="work">
-
+      <Work />
     </section>
     <section class="theology">
-
+      <div class="theology-container"> 
+      </div>
+      <Theology id="theo"/>
     </section>
     <section class="socials">
 
@@ -20,13 +21,17 @@
 </template>
 
 <script>
+import Intro from '../sections/Intro.vue';
 import AboutMe from '../sections/Description.vue';
-import Topography from "../assets/pattern/topography.svg";
+import Theology from '../sections/Theology.vue';
+import Work from '../sections/Work.vue';
 export default {
   name: "Home",
   components: {
     AboutMe,
-    Topography
+    Intro,
+    Theology,
+    Work
   },
   computed: {
   },
@@ -38,31 +43,69 @@ export default {
 
 <style lang="scss" scoped>
 #home {
-  background-color: blue;
+  background-color: #1c1c1c;
   width: 100%;
   .intro{
-    background-color: brown;
     height: 100vh;
   }
 
   .about-me{
+    background-image: url("../assets/pattern/topography.png");
     position: relative;
-    height: 150vh;
-    width: 100vw;
-    background-color: #FFF332;
-    z-index: 10;
-    .background{
-      position: absolute;
-      object-fit: fill;
-      z-index: -1;
-      width:100%;
-      height:100%;
+    @media only screen and (min-width: 600px) {
+        height: 120vh;
+        width: 100vw;
+        overflow: auto;
     }
     article{
-    //   background-color: #000000;
       margin: auto;
       padding: 20vh 20vw;
     }
+  }
+
+  .work{
+    background-image: url("../assets/pattern/graph-paper.png");
+    position: relative;
+    @media only screen and (min-width: 600px) {
+      height: 120vh;
+      width: 100vw;
+      overflow: auto;
+    }
+    article{
+      margin: auto;
+      padding: 20vh 20vw;
+    }
+  }
+
+  .theology{
+    background-image: url("../assets/pattern/topography.png");
+    position: relative;
+    @media only screen and (min-width: 600px) {
+      height: 120vh;
+      width: 100vw;
+    }
+    
+    #theo{
+      position: relative;
+      padding: 40px;
+      @media only screen and (min-width: 1399px) {
+        padding-left: 100px;
+        padding-top: 50px;
+        width: 60vw;
+      }
+    }
+    .theology-container{
+      position: absolute;
+      @media only screen and (min-width: 1400px) {
+        background-image: url("../assets/cross.jpg");
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+      }
+    }
+
+    
   }
 }
 </style>
