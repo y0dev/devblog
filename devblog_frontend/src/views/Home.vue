@@ -4,6 +4,7 @@
 
     </section>
     <section class="about-me">
+      <Topography class="background"/>
       <AboutMe />
     </section>
     <section class="work">
@@ -20,10 +21,12 @@
 
 <script>
 import AboutMe from '../sections/Description.vue';
+import Topography from "../assets/pattern/topography.svg";
 export default {
   name: "Home",
   components: {
     AboutMe,
+    Topography
   },
   computed: {
   },
@@ -43,10 +46,18 @@ export default {
   }
 
   .about-me{
-    background-image: url("../assets/pattern/topography.svg");
-    height: 100vh;
+    position: relative;
+    height: 150vh;
     width: 100vw;
-    background-color: #000FF0;
+    background-color: #FFF332;
+    z-index: 10;
+    .background{
+      position: absolute;
+      object-fit: fill;
+      z-index: -1;
+      width:100%;
+      height:100%;
+    }
     article{
     //   background-color: #000000;
       margin: auto;

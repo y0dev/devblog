@@ -2,14 +2,12 @@
   <article>
     <h2>A Glisp of Who I Am</h2>
     <p>
-      I am a Software Engineer currently working in embedded system. I started off in college as a Front-End Developer with experience in building responsive websites
-      while keeping the aesthetic integrity. Proficient in semantic
-      <span ref="reactive" @mouseenter="reactiveHighlight" @mouseleave="reactiveHighlightRemove">HTML, CSS, JavaScript</span>
-      and modern frameworks like
+      I am a Software Engineer currently working in embedded systems. From the start I started off in iOS development and from there grew to enjoy
+      web development both Front-End and Back-End. Who would have known User Interface would be a love/hate relationship. The struggle of coming 
+      up with inspiration while at the same time enjoying the finish product. I am proficient in the following languages: 
+      <span ref="reactive" @mouseenter="reactiveHighlight" @mouseleave="reactiveHighlightRemove">HTML, CSS, JavaScript, C/C++, and Python</span>
+      The frameworks I currently work in is 
       <span ref="gdesign" @mouseenter="gHighlight" @mouseleave="gHighlightRemove">VueJs</span>
-      . Always puts effort in making User Interface beautiful and practical with
-      tools like
-      <span ref="uidesign" @mouseenter="uiHighlight" @mouseleave="uiHighlightRemove">Photoshop, Illustrator and Figma</span>
       .
     </p>
     <p>
@@ -46,7 +44,9 @@ export default {
   name: "Description",
   components: {
     // JavaScript,
-     VueJS,NodeJS, Python
+    VueJS,
+    NodeJS, 
+    Python
   },
   data() {
     return {
@@ -66,22 +66,6 @@ export default {
       const tl = new TimelineLite();
       const { reactive } = this.$refs;
       tl.to(reactive, {
-        backgroundColor: "#141414",
-        color: "#8d8d8d",
-      });
-    },
-    uiHighlight() {
-      const tl = new TimelineLite();
-      const { uidesign } = this.$refs;
-      tl.to(uidesign, {
-        backgroundColor: "#1a1a1a",
-        color: "white",
-      });
-    },
-    uiHighlightRemove() {
-      const tl = new TimelineLite();
-      const { uidesign } = this.$refs;
-      tl.to(uidesign, {
         backgroundColor: "#141414",
         color: "#8d8d8d",
       });
@@ -111,6 +95,7 @@ p {
   font-size: clamp(16px, 1.2vw, 1.2vw);
   line-height: 2;
   color: #9d9d9d;
+  margin-bottom: 20px;
 }
 
 h2 {

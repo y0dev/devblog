@@ -6,13 +6,13 @@
         <div class="slideshow-container">
           <div class="mySlides fade">
             <div class="numbertext">1 / 2</div>
-            <img :src="require(`../assets/blogPhotos/4oJ.jpg`)" />
+            <img src="https://i.ibb.co/3yWwHxB/4oJ.jpg" />
             <div class="text">First Family Holiday</div>
           </div>
 
           <div class="mySlides fade">
             <div class="numbertext">2 / 2</div>
-            <img :src="require(`../assets/blogPhotos/wed.jpg`)" />
+            <img src="https://i.ibb.co/253vtTf/wed.jpg" />
             <div class="text">Pandemic Wedding</div>
           </div>
 
