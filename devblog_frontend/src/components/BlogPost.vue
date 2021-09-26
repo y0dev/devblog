@@ -15,29 +15,6 @@
       </div>
     </div>
     <div class="blog-photo">
-      <div v-if="post.title" class="slideshow">
-        <div class="slideshow-container">
-          <div class="mySlides fade">
-            <div class="numbertext">1 / 2</div>
-            <img src="https://i.ibb.co/3yWwHxB/4oJ.jpg" />
-            <div class="text">First Family Holiday</div>
-          </div>
-
-          <div class="mySlides fade">
-            <div class="numbertext">2 / 2</div>
-            <img src="https://i.ibb.co/253vtTf/wed.jpg" />
-            <div class="text">Pandemic Wedding</div>
-          </div>
-
-          <a class="prev" @click="plusSlides(-1)">&#10094;</a>
-          <a class="next" @click="plusSlides(1)">&#10095;</a>
-        </div>
-        <div style="text-align:center">
-          <span class="dot" @click="currentSlide(1)" ></span> 
-          <span class="dot" @click="currentSlide(2)"></span> 
-        </div>
-        <br>
-      </div>
       <img class="photo" :src="post.blogCoverPhoto" alt="" />
     </div>
   </div>

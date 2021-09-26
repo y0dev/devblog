@@ -1,0 +1,25 @@
+[
+   {
+      "proto": {
+        "category": "Programming",
+        "content":
+          "A tool that lets you track your project in harmony and don’t add an extra layer between your idea and execution. Project manager built with Next.js, firebase, SASS and react-spring.",
+        "preview_links": {
+          "live": "https://proto-lilac.vercel.app/"
+        },
+        "image": "https://i.imgur.com/ygngv3x.jpg",
+        "favorite": "Favorites"
+      }
+    },
+    {
+      "dev_hotel": {
+        "category": "Programming",
+        "content":
+          "A simple iOS project that was used to test Swift programming language at release in 2017",
+        "preview_links": {
+          "github": "https://github.com/y0dev/DevHotel"
+        },
+        "image": "https://github.com/y0dev/DevHotel/blob/master/DevHotel/App%20Images/updated_Dev_Hotel.gif"
+      }
+    }
+]

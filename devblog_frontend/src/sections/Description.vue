@@ -122,7 +122,7 @@ export default {
 p {
   font-size: clamp(16px, 1.2vw, 1.2vw);
   line-height: 2;
-  color: #9d9d9d;
+  color: #FFFFFF;
   margin-bottom: 20px;
 }
 

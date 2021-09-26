@@ -1,17 +1,32 @@
 <template>
   <article>
     <h2>Hi I'm Devontae *that should be easy to pronounce*</h2>
+    <Carousel :photos="about_me" :length="about_me_length" />
     <img :src="require('../assets/blogPhotos/img_01.jpg')" alt="">
   </article>
 </template>
 
 <script>
+import Carousel from '../components/Carousel.vue';
+import photos from '../assets/json/photos.json'
 export default {
   name: "Intro",
   components: {
+    Carousel,
+  },
+  data() {
+    return {
+      about_me: null,
+      about_me_length: 0,
+    }
   },
   methods: {
     
+  },
+  created() {
+    this.about_me = photos['about-me']
+    this.about_me_length = this.about_me.length;
+    console.log(photos['about-me'])
   },
 };
 </script>
