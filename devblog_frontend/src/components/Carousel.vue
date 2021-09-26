@@ -1,11 +1,9 @@
 <template>
    <div class="slideshow-container">
-     <div class="mySlides fade">
-       <div v-for="(item, index) in photos" :key="index">
+     <div v-for="(item, index) in photos" :key="item.slide_id" class="mySlides fade">
          <div class="numbertext">{{ index + 1}} / {{ length }}</div>
-         <img :src="item.photo" alt="">
+         <img :src="item.photo" :alt="item.title" style="width:100%; max-height:600px">
          <div class="text">{{ item.title }}</div>
-       </div>
      </div>
      <a class="prev" @click="plusSlides(-1)">&#10094;</a>
      <a class="next" @click="plusSlides(1)">&#10095;</a>
@@ -28,8 +26,16 @@ export default {
       required: true,
     }
   },
+  data() {
+   return {
+     currentIndex: 1,
+   };
+  },
   created() {
     console.log(length);
+  },
+  mounted() {
+   this.showSlides(this.currentIndex);
   },
   methods: {
     plusSlides(n) {
@@ -39,7 +45,7 @@ export default {
     currentSlide(n) {
       this.showSlides(this.currentIndex = n);
     },
-
+    
     showSlides(n) {
       var i;
       var slides = document.getElementsByClassName("mySlides");
@@ -61,113 +67,100 @@ export default {
 
 <style lang="scss" scoped>
 .slideshow-container {
-   width: 100%;
-   height: 100%;
-   .mySlides {
-      width: 100%;
-      height: 100%;
-   }
-   img {
-      vertical-align: middle;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      margin-bottom: -5%;
-      @media(min-width: 700px) {
-      margin-bottom: 0;
-      }
-   }
+  max-width: 1000px;
+  max-height: 700px;
+  position: relative;
+  margin: auto;
+  @media only screen and (max-width: 700px) {
+    margin-bottom: 30px;
+  }
 
-   @media(min-width: 700px) {
-      min-width: 100%;
-      min-height: 100%;
-   }
-   /* Next & previous buttons */
-   .prev, .next {
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      width: auto;
-      padding: 16px;
-      margin-top: -22px;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      transition: 0.6s ease;
-      border-radius: 0 3px 3px 0;
-      user-select: none;
-   }
+  /* Don't show all the images only show current index  this is done at mounted */
+  .mySlides{display: none;}
 
+  img{border-radius: 10% 30% 50% 70%;}
+  /* Next & previous buttons */
+  .prev, .next {
+     cursor: pointer;
+     position: absolute;
+     top: 50%;
+     width: auto;
+     margin-top: -22px;
+     padding: 16px;
+     color: white;
+     font-weight: bold;
+     font-size: 18px;
+     transition: 0.6s ease;
+     border-radius: 0 3px 3px 0;
+     user-select: none;
+  }
    /* Position the "next button" to the right */
-   .next {
-      right: 0;
-      border-radius: 3px 0 0 3px;
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
    }
-
    /* On hover, add a black background color with a little bit see-through */
-   .prev:hover, .next:hover {
-      background-color: rgba(0,0,0,0.8);
-   }
+  .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
 
-   /* Caption text */
-   .text {
-      color: #f2f2f2;
-      font-size: 15px;
-      padding: 8px 12px;
-      position: absolute;
-      bottom: 8px;
-      width: 100%;
-      text-align: center;
-      background-color: rgba(0,0,0,0.5);
-   }
-   
-   /* Number text (1/2 etc) */
-   .numbertext {
-      color: #f2f2f2;
-      font-size: 12px;
-      padding: 8px 12px;
-      position: absolute;
-      top: 0;
-   }
+  /* Caption text */
+  .text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
 
-   /* The dots/bullets/indicators */
-   .dot {
-      cursor: pointer;
-      height: 15px;
-      width: 15px;
-      margin: 0 2px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.6s ease;
-   }
+  /* Number text (1/3 etc) */
+  .numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    margin-left: 40px;
+    margin-top: 10px;
+    position: absolute;
+    top: 0;
+  }
 
-   .active, .dot:hover {
-      background-color: #717171;
-   }
+  /* The dots/bullets/indicators */
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
 
-   /* Fading animation */
-   .fade {
-      -webkit-animation-name: fade;
-      -webkit-animation-duration: 1.5s;
-      animation-name: fade;
-      animation-duration: 1.5s;
-   }
+  .active, .dot:hover {
+    background-color: #717171;
+  }
 
-   @-webkit-keyframes fade {
-      from {opacity: .4} 
-      to {opacity: 1}
-   }
+  /* Fading animation */
+  .fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
 
-   @keyframes fade {
-      from {opacity: .4} 
-      to {opacity: 1}
-   }
+  @-webkit-keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
 
-   /* On smaller screens, decrease text size */
-   @media only screen and (max-width: 300px) {
-      .prev, .next,.text {font-size: 11px}
-   }
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
 }
 
 </style>

@@ -53,6 +53,10 @@ export default {
     background-image: url("../assets/pattern/triangles.png");
     background-size: cover;
     position: relative;
+    height: 100%;
+    @media only screen and (min-width: 699px) {
+      height: 100vh;
+    }
   }
 
   .about-me{

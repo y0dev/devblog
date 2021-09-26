@@ -2,7 +2,6 @@
   <article>
     <h2>Hi I'm Devontae *that should be easy to pronounce*</h2>
     <Carousel :photos="about_me" :length="about_me_length" />
-    <img :src="require('../assets/blogPhotos/img_01.jpg')" alt="">
   </article>
 </template>
 
