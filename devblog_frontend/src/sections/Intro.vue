@@ -1,7 +1,7 @@
 <template>
   <article>
     <h2>Hi I'm Devontae *that should be easy to pronounce*</h2>
-    <Carousel :photos="about_me" :length="about_me_length" />
+    <Carousel class="carousel" :photos="about_me" :length="about_me_length" />
   </article>
 </template>
 
@@ -46,17 +46,7 @@ h2{
   margin: 0 50px;
   font-size: calc((3.5 - 1) * 1.2vw + 1rem); 
 }
-img {
-  /* display: none; */
-  width: 80%;
-  height: 100%;
-  top: 15vh;
-  left: 20px;
-  opacity: 0.6;
-  -moz-box-shadow: 1px 2px 3px rgba(0,0,0,.5);
-  -webkit-box-shadow: 1px 2px 3px rgba(0,0,0,.5);
-  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
-}
+
 @media screen and (max-width: 700px) {
   article{
     grid-template-columns: repeat(1, 1fr);

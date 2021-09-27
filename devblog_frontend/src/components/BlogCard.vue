@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-card">
+    <div v-on:click="viewBlog" class="blog-card">
         <div class="category-icons">
             <div v-show="post.videoId !== ''" class="icon">
                 <Play class="video" />
@@ -45,6 +45,9 @@ export default {
     editBlog() {
       this.$router.push({ name: "EditBlog", params: { blogid: this.post.blogID } });
     },
+    viewBlog() {
+      this.$router.push({ name: "ViewBlog", params: { blogid: this.post.blogID } });
+    }
   },
   computed: {
     editPost() {

@@ -1,25 +1,46 @@
 [
-   {
-      "proto": {
-        "category": "Programming",
-        "content":
-          "A tool that lets you track your project in harmony and don’t add an extra layer between your idea and execution. Project manager built with Next.js, firebase, SASS and react-spring.",
-        "preview_links": {
-          "live": "https://proto-lilac.vercel.app/"
-        },
-        "image": "https://i.imgur.com/ygngv3x.jpg",
-        "favorite": "Favorites"
-      }
+  {
+      
+    "title": "Histo-link",
+    "category": "Programming",
+    "content":
+      "Have you ever been study a subject or about something in the past and recently tried to figure out what website you visited while studying that topic,but can't remember the website. With this tool,you can track your search history with ease with out all the extra searching. Still in progress.",
+    "preview_links": {
+      "github": "https://github.com/y0dev/ologyDigitalFrontend"
     },
-    {
-      "dev_hotel": {
-        "category": "Programming",
-        "content":
-          "A simple iOS project that was used to test Swift programming language at release in 2017",
-        "preview_links": {
-          "github": "https://github.com/y0dev/DevHotel"
-        },
-        "image": "https://github.com/y0dev/DevHotel/blob/master/DevHotel/App%20Images/updated_Dev_Hotel.gif"
-      }
-    }
+    "image": "https://i.ibb.co/yXCV9zD/histo-link-landing-v1.png",
+    "favorite": "Favorites"
+  },
+  {
+      
+    "title": "PrayerChain",
+    "category": "Programming",
+    "content":
+      "Need a way to pray for those in need or those who ask for prayer. This application will allow you to pray for those people by way of reminder.",
+    "preview_links": {
+      
+    },
+    "image": "",
+    "favorite": "Favorites"
+  },
+  {
+    "title": "CMS-Ology",
+    "category": "Programming",
+    "content":
+      "I Content Management System with the hopes to provide users with the capability to launch their blog or website. With this services users can create a popup shop where they can sell items that they made. Or talk about the hot topics and share with friends on your blog.",
+    "preview_links": {
+      
+    },
+    "image": ""
+  },
+  {
+    "title": "Dev's Hotel Registry",
+    "category": "Programming",
+    "content":
+      "A simple iOS project that was used to test Swift programming language at release in 2017",
+    "preview_links": {
+      "github": "https://github.com/y0dev/DevHotel"
+    },
+    "image": ""
+  }
 ]

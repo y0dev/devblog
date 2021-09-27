@@ -17,12 +17,12 @@
     >
       <ProjectModule
         v-on:emitImage="imagePreview"
-        :title="Object.keys(project).toString()"
-        :preview="project[Object.keys(project).toString()].preview_links"
-        :type="project[Object.keys(project).toString()].category"
-        :read="project[Object.keys(project).toString()].article"
-        :coverImage="project[Object.keys(project).toString()].image"
-        :content="project[Object.keys(project).toString()].content"
+        :title="project.title"
+        :preview="project.preview_links"
+        :type="project.category"
+        :read="project.article"
+        :coverImage="project.image"
+        :content="project.content"
         class="module"
       />
     </div>
@@ -35,7 +35,8 @@ import { TimelineLite } from "gsap/dist/gsap";
 import ProjectModule from "../components/ProjectModule";
 import FilterTags from "../components/FilterTags";
 
-import project from "../assets/projectData";
+// import project from "../assets/projectData";
+import projects from "../assets/json/projects.json"
 export default {
   name: "Work",
   components: {
@@ -44,8 +45,8 @@ export default {
   },
   data() {
     return {
-      selectedType: "Favorites",
-      criteria: ["Favorites", "Programming", "Theology"],
+      selectedType: "In Production",
+      criteria: ["In Production", "Programming"],
     };
   },
   methods: {
@@ -58,11 +59,12 @@ export default {
   },
   computed: {
     filterProject() {
-      return project.filter((pr) => {
-        if (this.selectedType === "Favorites") {
-          return pr[Object.keys(pr).toString()].favorite === this.selectedType;
+      return projects.filter((pr) => {
+        if (this.selectedType === "In Production") {
+          console.log(pr.title)
+          return pr.favorite === "Favorites";
         }
-        return pr[Object.keys(pr).toString()].category === this.selectedType;
+        return pr.category === this.selectedType;
       });
     },
   },
@@ -104,7 +106,7 @@ h1 {
 .criteria-list {
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(auto-fit, minmax(50px, 200px));
   width: 70vw;
   max-width: 1000px;
   list-style-type: none;
@@ -112,6 +114,7 @@ h1 {
 
 .criteria-list li {
   margin-right: 1em;
+  text-align: center;
 }
 
 .project-holder {

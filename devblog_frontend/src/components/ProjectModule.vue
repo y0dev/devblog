@@ -26,6 +26,7 @@
     </p>
     <img
       class="cover-image"
+      v-show="coverImage"
       :src="coverImage"
       :alt="`Screenshot of ${projectName}`"
       @click="emitImage"
@@ -68,7 +69,7 @@ export default {
     },
     coverImage: {
       type: String,
-      required: true,
+      required: false,
     },
     type: {
       type: String,

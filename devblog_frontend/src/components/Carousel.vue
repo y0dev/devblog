@@ -1,17 +1,20 @@
 <template>
-   <div class="slideshow-container">
-     <div v-for="(item, index) in photos" :key="item.slide_id" class="mySlides fade">
-         <div class="numbertext">{{ index + 1}} / {{ length }}</div>
-         <img :src="item.photo" :alt="item.title" style="width:100%; max-height:600px">
-         <div class="text">{{ item.title }}</div>
-     </div>
-     <a class="prev" @click="plusSlides(-1)">&#10094;</a>
-     <a class="next" @click="plusSlides(1)">&#10095;</a>
+   <div>
+      <div class="slideshow-container">
+         <div v-for="(item, index) in photos" :key="item.slide_id" class="mySlides fade">
+               <div class="numbertext">{{ index + 1}} / {{ length }}</div>
+               <img :src="item.photo" :alt="item.title" style="width:100%; max-height:600px">
+               <div class="text">{{ item.title }}</div>
+         </div>
+         <!-- Next and previous buttons -->
+         <a class="prev" @click="plusSlides(-1)">&#10094;</a>
+         <a class="next" @click="plusSlides(1)">&#10095;</a>
+      </div>
+      <!-- The dots/circles -->
+      <div class="dots" style="text-align:center">
+         <span class="dot" v-for="(item, index) in photos" :key="index" @click="currentSlide(index + 1)" ></span> 
+      </div>
    </div>
-   <!-- <div style="text-align:center">
-     <span class="dot" @click="currentSlide(1)" ></span> 
-     <span class="dot" @click="currentSlide(2)"></span> 
-   </div> -->
 </template>
 
 <script>
@@ -78,7 +81,7 @@ export default {
   /* Don't show all the images only show current index  this is done at mounted */
   .mySlides{display: none;}
 
-  img{border-radius: 10% 30% 50% 70%;}
+//   img{border-radius: 10% 30% 50% 70%;}
   /* Next & previous buttons */
   .prev, .next {
      cursor: pointer;
@@ -128,18 +131,6 @@ export default {
     top: 0;
   }
 
-  /* The dots/bullets/indicators */
-  .dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-  }
-
   .active, .dot:hover {
     background-color: #717171;
   }
@@ -162,5 +153,15 @@ export default {
     to {opacity: 1}
   }
 }
-
+/* The dots/bullets/indicators */
+.dots .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 6px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
 </style>

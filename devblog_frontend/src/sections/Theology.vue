@@ -1,5 +1,6 @@
 <template>
   <article>
+    <h1>Theology</h1>
     <p>As was mentioned in the section above I have a love for Christ. Simply because without 
     <span ref="reactive" @mouseenter="reactiveHighlight" @mouseleave="reactiveHighlightRemove">Christ</span>
     I would not know God. 
@@ -62,10 +63,16 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-size: 72px;
+  color: #FFFFFF;
+  padding-bottom: 30px;
+  text-align: center;
+}
 p {
   font-size: clamp(12px, 1vw, 16px);
   line-height: 2;
-  color: #9d9d9d;
+  color: #FFFFFF;
   margin-bottom: 20px;
 }
 span {
