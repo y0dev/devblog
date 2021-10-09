@@ -16,14 +16,29 @@
     I would not know God. 
     <span ref="gdesign" @mouseenter="gHighlight" @mouseleave="gHighlightRemove">The only God!</span>
     </p>
+    <AudioPlayer class="audio-player" :playlist="playlist"/>
   </article>
 </template>
 
 <script>
 import { TimelineLite } from "gsap/dist/gsap";
+import AudioPlayer from "../components/AudioPlayer.vue";
+import podcasts from '../assets/json/podcast.json';
 export default {
   name: "Theology",
   components: {
+    AudioPlayer,
+  },
+  data() {
+    return {
+      playlist: null,
+      playlist_length: 0,
+    }
+  },
+  created() {
+    this.playlist = podcasts['podcasts']
+    this.playlist_length = this.playlist.length;
+    console.log(podcasts['podcasts'])
   },
   methods: {
     reactiveHighlight() {
@@ -108,6 +123,14 @@ blockquote:hover {
   blockquote {
     max-width: 80%;
     margin-left: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .audio-player{
+    width: 70%;
+    align-content: center;
+    justify-content: center;
   }
 }
 </style>

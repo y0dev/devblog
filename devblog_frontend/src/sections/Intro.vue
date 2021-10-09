@@ -7,7 +7,7 @@
 
 <script>
 import Carousel from '../components/Carousel.vue';
-import photos from '../assets/json/photos.json'
+import photos from '../assets/json/photos.json';
 export default {
   name: "Intro",
   components: {
