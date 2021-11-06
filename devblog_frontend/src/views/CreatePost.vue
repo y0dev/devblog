@@ -280,11 +280,12 @@ export default {
     justify-content: center;
     align-items: center;
     margin-bottom: 32px;
+    flex-wrap: wrap;
     @media (min-width: 500px) {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
     }
-    @media (max-width: 768) {
+    @media (max-width: 768px) {
       display: none;
       grid-template-rows: 1fr;
       grid-template-columns: 1fr;
@@ -340,10 +341,16 @@ export default {
     }
     .ql-editor {
       padding: 20px 16px 30px;
+      z-index: 100;
     }
   }
   .blog-actions {
     margin-top: 32px;
+    @media (max-width: 500px) {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
     button {
       margin-right: 16px;
     }

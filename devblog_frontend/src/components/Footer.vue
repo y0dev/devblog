@@ -88,6 +88,7 @@ footer {
         font-weight: 600;
         @media (min-width: 800px) {
           text-align: initial;
+          width: 100%;
         }
       }
       ul {
@@ -107,7 +108,8 @@ footer {
       }
 
       .col-1 {
-        flex-direction: column;
+        flex-direction: column; 
+        align-items: center;
         img{
           width: 40%;
         }

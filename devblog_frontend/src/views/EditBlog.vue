@@ -294,7 +294,7 @@ export default {
     margin-bottom: 32px;
 
     input:nth-child(1) {
-      min-width: 300px;
+      min-width: 250px;
     }
 
     input {
@@ -314,7 +314,10 @@ export default {
       margin-left: 16px;
       position: relative;
       display: flex;
-
+      flex-wrap: wrap;
+      @media (max-width: 500px) {
+        gap: 20px;
+      }
       input {
         display: none;
       }
@@ -356,12 +359,5 @@ export default {
     }
   }
 
-  .blog-actions {
-    margin-top: 32px;
-
-    button {
-      margin-right: 16px;
-    }
-  }
 }
 </style>

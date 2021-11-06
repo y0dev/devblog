@@ -129,16 +129,19 @@ header {
 
   nav {
     display: flex;
-    padding: 25px 0;
+    padding: 0;
+    @media (max-width: 500px) {
+      padding: 20px 0;
+    }
     
     .branding {
       display: flex;
       align-items: center;
       .header{
         img{
-          width: 50%;
+          width: 75%;
           @media (min-width: 410px) {
-            width: 100%;
+            width: 60%;
           }
         }
 

@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import BlogHome from "../views/BlogHome.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login.vue";
 import Profile from "../views/Profile.vue";
@@ -22,15 +21,6 @@ const routes = [
     component: Home,
     meta: {
         title: "Home",
-        requiresAuth: false,
-    },
-  },
-  {
-    path:"/blogs",
-    name: "BlogHome",
-    component: BlogHome,
-    meta: {
-        title: "BlogHome",
         requiresAuth: false,
     },
   },
