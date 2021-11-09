@@ -8,7 +8,6 @@ import CreatePost from "../views/CreatePost.vue";
 import BlogPreview from "../views/BlogPreview.vue";
 import ViewBlog from "../views/ViewBlog.vue";
 import EditBlog from "../views/EditBlog.vue";
-import ViewAboutMe from "../views/ViewAboutMe.vue";
 
 import {auth} from '../firebase'
 
@@ -77,15 +76,6 @@ const routes = [
     component: ViewBlog,
     meta: {
         title: "View Blog Post",
-        requiresAuth: false,
-    },
-  },
-  {
-    path:"/aboutme",
-    name: "ViewAboutMe",
-    component: ViewAboutMe,
-    meta: {
-        title: "About Me",
         requiresAuth: false,
     },
   },

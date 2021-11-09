@@ -2,7 +2,7 @@
   <div class="post-view">
     <div class="container">
       <h2>{{ this.blogTitle }}</h2>
-      <VideoFrame v-if="this.videos" :videos="this.videos"/>
+      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
       <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
     </div>
@@ -11,7 +11,6 @@
 
 <script>
 import { getiframes,formatHtml } from '../helpers'
-// import LinkCard from '../components/LinkCard.vue'
 import VideoFrame from '../components/VideoFrame.vue'
 export default {
   name: "PostPreview",

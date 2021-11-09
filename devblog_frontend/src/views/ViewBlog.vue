@@ -3,7 +3,7 @@
     <div class="container">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <VideoFrame v-if="this.videos" :videos="this.videos"/>
+      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
       <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
       <!-- <LinkCard v-show="this.blogHtml" /> -->
@@ -36,7 +36,7 @@ export default {
     });
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
     this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo)
-    
+    console.log(this.videos);
     // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
     // .then(() => {
     //   console.log('Done')

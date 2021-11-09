@@ -18,7 +18,9 @@
       <h4>{{ post.blogTitle }}</h4>
       <h6>Posted on: {{ new Date(post.blogDate).toLocaleString('en-us', { dateStyle: 'long'}) }}</h6>
       <router-link class="link" :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }">
-        View The Video <Arrow class="arrow" />
+        <span v-if="post.videoId !== ''">View The Video</span>
+        <span v-else>View The Post</span>
+        <Arrow class="arrow" />
       </router-link>
     </div>
   </div>
@@ -75,7 +77,7 @@ export default {
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 99;
+        z-index: 2;
 
         .icon {
             display: flex;
@@ -102,7 +104,7 @@ export default {
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 99;
+    z-index: 2;
 
     .icon {
       display: flex;

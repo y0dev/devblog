@@ -130,7 +130,7 @@ header {
   nav {
     display: flex;
     padding: 0;
-    @media (max-width: 500px) {
+    @media (max-width: 750px) {
       padding: 20px 0;
     }
     
@@ -161,8 +161,10 @@ header {
       justify-content: flex-end;
 
       ul {
-        margin-right: 32px;
-
+        margin-right: 20px;
+        @media (max-width: 770px) {
+          margin-right: 0;
+        }
         .link {
           margin-right: 32px;
         }

@@ -2,42 +2,14 @@
   <div class="blog-wrapper about-me">
     <div class="blog-content">
       <div>
-        <h2 v-if="post.title">{{ post.title }}</h2>
-        <h2 v-else>{{ post.blogTitle }}</h2>
-        <p v-if="post.title">{{post.info}}</p>
-        <p class="content-preview" v-else v-html="blogInfo"></p>
-        <router-link class="link link-light" v-if="post.title" :to="{ name: 'ViewAboutMe' }">
-          Learn More<Arrow class="arrow arrow-light" />
-        </router-link>
-        <router-link class="link" v-else :to="{ name: 'ViewBlog', params: { blogid: this.post.blogID } }">
+        <h2>{{ post.blogTitle }}</h2>
+        <p class="content-preview" v-html="blogInfo"></p>
+        <router-link class="link" :to="{ name: 'ViewBlog', params: { blogid: this.post.blogID } }">
           View The Post<Arrow class="arrow" />
         </router-link>
       </div>
     </div>
     <div class="blog-photo">
-      <div v-if="post.title" class="slideshow">
-        <div class="slideshow-container">
-          <div class="mySlides fade">
-            <div class="numbertext">1 / 2</div>
-            <img src="https://i.ibb.co/3yWwHxB/4oJ.jpg" />
-            <div class="text">First Family Holiday</div>
-          </div>
-
-          <div class="mySlides fade">
-            <div class="numbertext">2 / 2</div>
-            <img src="https://i.ibb.co/253vtTf/wed.jpg" />
-            <div class="text">Pandemic Wedding</div>
-          </div>
-
-          <a class="prev" @click="plusSlides(-1)">&#10094;</a>
-          <a class="next" @click="plusSlides(1)">&#10095;</a>
-        </div>
-        <div style="text-align:center">
-          <span class="dot" @click="currentSlide(1)" ></span> 
-          <span class="dot" @click="currentSlide(2)"></span> 
-        </div>
-        <br>
-      </div>
       <img class="photo" :src="post.blogCoverPhoto" alt="" />
     </div>
   </div>
