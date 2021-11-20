@@ -3,10 +3,12 @@
     <div class="container">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
+      <VideoFrame v-if="this.videos" :videos="this.videos"/>
       <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
-      <!-- <LinkCard v-show="this.blogHtml" /> -->
+      <LinkCard class="link-card" 
+        v-for="(video, id) in videos" :key="id" 
+       :video="video"/>
       <!-- link="https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html"/> -->
       <!-- :link="aboutMePost" -->
     </div>
@@ -15,12 +17,12 @@
 
 <script>
 import { getiframes,formatHtml } from '../helpers'
-// import LinkCard from '../components/LinkCard.vue'
+import LinkCard from '../components/LinkCard.vue'
 import VideoFrame from '../components/VideoFrame.vue'
 export default {
   name: "ViewBlog",
   components: { 
-    // LinkCard,
+    LinkCard,
     VideoFrame 
   },
   data() {
@@ -36,7 +38,7 @@ export default {
     });
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
     this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo)
-    console.log(this.videos);
+    
     // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
     // .then(() => {
     //   console.log('Done')
@@ -57,6 +59,16 @@ export default {
     font-weight: 400;
     font-size: 14px;
     margin-bottom: 24px;
+  }
+
+  .link-card {
+    display: none;
+  }
+
+  @media only screen and (max-width: 720px) {
+    .link-card {
+      display: flex;
+    }
   }
 
   // .video-view {

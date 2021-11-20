@@ -33,7 +33,7 @@ export default new Vuex.Store({
 
       aboutMe: [],
       blogPosts: [],
-      faithBlogPosts: [],
+      theologyBlogPosts: [],
       sportsBlogPosts: [],
       techBlogPosts: [],
       postLoaded: null,
@@ -153,7 +153,7 @@ export default new Vuex.Store({
           state.blogPosts.push(data);
         }
       });
-      state.faithBlogPosts  = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Faith'.toLowerCase())
+      state.theologyBlogPosts  = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Theology'.toLowerCase())
       state.sportsBlogPosts = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Sports'.toLowerCase())
       state.techBlogPosts   = state.blogPosts.filter((post) => post.blogCategory.toLowerCase() == 'Technology'.toLowerCase())
       state.postLoaded = true;

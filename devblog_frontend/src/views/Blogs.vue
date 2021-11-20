@@ -6,7 +6,7 @@
         <input type="checkbox" v-model="editPost" />
       </div>
     </div>
-        <BlogSection title="Faith" :blogPosts="faithBlogPosts"/>
+        <BlogSection title="Theology" :blogPosts="theologyBlogPosts"/>
         <BlogSection title="Sports" :blogPosts="sportsBlogPosts"/>
         <BlogSection title="Technology" :blogPosts="techBlogPosts"/>
   </div>
@@ -23,8 +23,9 @@ export default {
     blogPosts() {
       return this.$store.state.blogPosts;
     },
-    faithBlogPosts() {
-      return this.$store.state.faithBlogPosts;
+    theologyBlogPosts() {
+      console.log(this.$store.state.theologyBlogPosts);
+      return this.$store.state.theologyBlogPosts;
     },
     sportsBlogPosts() {
       return this.$store.state.sportsBlogPosts;

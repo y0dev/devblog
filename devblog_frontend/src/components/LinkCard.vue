@@ -1,13 +1,14 @@
 <template>
     <div class="linkcard-container flex my-1">
-        <img class="website-img" src="../assets/logo.png" alt="">
+        <img class="website-img" :src="image" alt="">
         <div class="info grid info-grid">
-            <h5 class="webpage-title">Title</h5>
+            <h5 class="webpage-title"> {{ title }}</h5>
             <div class="description">
-                <p class="info sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, consequatur. Minima cum modi ex possimus voluptas. Delectus aut eius tempore?</p>
+                <p class="info sm">{{ description }}</p>
                 <div class="url-link">
                     <Chain class="chain" />
-                    <a :href="this.link" class="link">Some Link</a>
+                    <a v-if="this.link" :href="this.link" class="link">Some Link</a>
+                    <a v-else-if="this.video" :href="this.url" class="link">{{ hostname }}</a>
                 </div>
             </div>
         </div>
@@ -19,7 +20,16 @@ import { getLinkInfo } from '../helpers';
 import Chain from "../assets/icons/link-light.svg";
 export default {
   name: "LinkCard",
-  props: ["link"],
+  props: ["link","video"],
+  data() {
+      return {
+        title: '',
+        image: '',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, consequatur. Minima cum modi ex possimus voluptas. Delectus aut eius tempore?',
+        hostname: '',
+        url: '',
+      }
+  },
   components: {
     Chain
   },
@@ -38,6 +48,15 @@ export default {
         title.textContent = info.title;
         paragraph.textContent = info.metaDescription;
         websiteTitle.textContent =info.hostname;
+      }
+      else if (this.video) {
+        const { info ,host, src } = this.video;
+        const { title, description, small_img } = info;
+        this.title = title;
+        this.description = description;
+        this.image = small_img;
+        this.url = src;
+        this.hostname = host;
       }
       //https://developpaper.com/the-method-of-introducing-external-js-file-into-vue-component
   },
@@ -74,13 +93,16 @@ img {
 .info {
     margin: 0 5px;
     width:100%;
-    .title {
+    .webpage-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
         // border-bottom: 0.5px solid #363636;
         grid-column: 1 / span 2;
     }
     .description {
         // background-color: blue;
         grid-column: 1 / span 2;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         .sm{

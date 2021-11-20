@@ -63,7 +63,8 @@ function getYouTubeThumbnail(videoId) {
 }
 function getYouTubeInfo(videoId) {
     return new Promise((resolve) => {
-        fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=contentDetails&part=snippet&id=${videoId}`, {
+        const url = `https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_GOOGLE_API_KEY}&part=contentDetails&part=snippet&id=${videoId}`;
+        fetch(url, {
         method: "GET",
         headers: { "Content-type": "application/json; charset=UTF-8" }
         })
@@ -74,7 +75,9 @@ function getYouTubeInfo(videoId) {
             let images = getImages(snippet.thumbnails);
             let videoInfo = {
                 title: snippet.title,
+                description: snippet.description,
                 image: images[images.length - 1],
+                small_img: images[1],
                 duration: item0.contentDetails.duration,
             }
             resolve(videoInfo)
@@ -110,9 +113,11 @@ const getiframes = async (html) => {
     let videos = []
     const iframes = dom('iframe.ql-video');
     for (var iframe of iframes) {
+        console.log(iframe);
         let video = {
             src: iframe.attribs.src,
         }
+        console.log(video);
         if (!iframe.attribs.src.includes('vimeo.com')) {
             const info = await getYouTubeInfo(getVideoId_YT(iframe.attribs.src));
             video.host = 'Youtube';

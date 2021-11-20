@@ -91,21 +91,42 @@ export default {
   height: 100%;
   /* background-color: blue; */
 }
+.play-btn{
+  display: none;
+}
 
-.overlay{
-  background-color: rgba(0, 0, 0, 0.35);
-  width: 100%;
-  height: 100%;
-  padding: 0 20px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #FFFFFF;
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  top: 0;
+h2{
+  display: none;
+  font-weight: 500;
+  width: 100%
+}
+@media only screen and (min-width: 720px) {
+  .overlay{
+    background-color: rgba(0, 0, 0, 0.35);
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    top: 0;
 
+  }
+  h2{
+    display: block;
+  }
+  
+  .play-btn{
+    display: block;
+    background-color: rgba(255, 0, 0, 0.65);
+    border-radius: 20px;
+    text-decoration: none;
+  }
+  
 }
 
 .picture{
@@ -133,13 +154,6 @@ iframe{
   height: 100%;
 }
 
-h2{
-  font-weight: 500;
-}
 
-.play-btn{
-  background-color: rgba(255, 0, 0, 0.65);
-  border-radius: 20px;
-  text-decoration: none;
-}
+
 </style>

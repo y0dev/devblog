@@ -11,7 +11,7 @@
         <div class="category">
           <select v-model="category">
             <option disabled value="">Please select one</option>
-            <option>Faith</option>
+            <option>Theology</option>
             <option>Sports</option>
             <option>Technology</option>
           </select>

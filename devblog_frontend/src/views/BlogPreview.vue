@@ -3,7 +3,7 @@
     <div class="container">
       <h2>{{ this.blogTitle }}</h2>
       <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
-      <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
+      <img v-else :src="blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
     </div>
   </div>
@@ -11,6 +11,7 @@
 
 <script>
 import { getiframes,formatHtml } from '../helpers'
+// import LinkCard from '../components/LinkCard.vue'
 import VideoFrame from '../components/VideoFrame.vue'
 export default {
   name: "PostPreview",
@@ -25,8 +26,8 @@ export default {
     }
   },
   async mounted() {
-    this.videos = await getiframes(this.currentBlog[0].blogInfo);
-    this.blogHtml = await formatHtml(this.$store.state.blogInfo)
+    this.videos = await getiframes(this.$store.state.blogInfo);
+    this.blogHtml = await formatHtml(this.$store.state.blogInfo);
   },
   destroyed() {
     console.log(this.$store.state.blogInfo)
@@ -64,6 +65,10 @@ export default {
   img {
     width: 100%;
     margin-bottom: 32px;
+  }
+
+  .list li {
+    margin: 20px 0;
   }
 
   // .video-view {

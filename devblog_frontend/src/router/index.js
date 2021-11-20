@@ -61,7 +61,7 @@ const routes = [
     },
   },
   {
-    path:"/post",
+    path:"/post-preview",
     name: "BlogPreview",
     component: BlogPreview,
     meta: {
