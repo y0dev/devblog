@@ -3,7 +3,7 @@
     <div class="container">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
       <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <VideoFrame v-if="this.videos" :videos="this.videos"/>
+      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
       <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
       <LinkCard class="link-card" 
