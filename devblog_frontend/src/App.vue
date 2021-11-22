@@ -76,7 +76,7 @@ export default {
   margin: 0 auto;
 }
 
-ol,ul{
+ul{
   padding: 20px 40px;
 }
 

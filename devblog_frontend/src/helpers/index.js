@@ -93,7 +93,12 @@ const formatHtmlForBlogPost = (html) => {
     p[0].attribs.style = 'width: 250px; overflow: hidden; text-overflow: ellipsis;';
     return dom.html();
 };
-
+const isEmptyObject = (obj) => {
+    // console.log(obj,
+    //     Object.keys(obj).length);
+    return obj // 👈 null and undefined check
+    && Object.keys(obj).length === 0;
+}
 const formatHtml = (html) => {
     return new Promise((resolve) => {
         const dom = cheerio.load(html);
@@ -101,8 +106,26 @@ const formatHtml = (html) => {
         iframes.remove();
 
         const ol = dom('ol');
-        ol.addClass('list')
-        console.log(ol)
+        ol.addClass('list');
+
+        dom('li').append('<ol class="sub-list" type="i"></ol>');
+        const items = dom('li');
+        for (const li of items) {
+            if(li.next) {
+                if((isEmptyObject(li.next.attribs) && isEmptyObject(li.attribs)) || (!isEmptyObject(li.attribs))) {
+                    li.children.pop();
+                } else {
+                    while (!isEmptyObject(li.next.attribs)) {
+                        li.children[1].children.push(li.next);
+                        dom(li.next).remove();
+                    }
+                }
+            }
+        }
+
+
+
+        // console.log(dom.html())
         // iframes.wrap('<div class=\'video-view\'></div>')
         resolve(dom.html());
     });
@@ -127,7 +150,7 @@ const getiframes = async (html) => {
         }
         videos.push(video)
     }
-    console.log(videos)
+    // console.log(videos)
     return videos
 };
 

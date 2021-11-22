@@ -2,13 +2,23 @@
   <div class="post-view" v-if="currentBlog">
     <div class="container">
       <h2>{{ this.currentBlog[0].blogTitle }}</h2>
-      <h4>Posted on: {{ new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}</h4>
-      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos"/>
+      <h4>
+        Posted on:
+        {{
+          new Date(this.currentBlog[0].blogDate).toLocaleString("en-us", {
+            dateStyle: "long",
+          })
+        }}
+      </h4>
+      <VideoFrame v-if="this.videos.length > 0" :videos="this.videos" />
       <img v-else :src="this.currentBlog[0].blogCoverPhoto" alt="" />
       <div class="post-content" v-html="this.blogHtml"></div>
-      <LinkCard class="link-card" 
-        v-for="(video, id) in videos" :key="id" 
-       :video="video"/>
+      <LinkCard
+        class="link-card"
+        v-for="(video, id) in videos"
+        :key="id"
+        :video="video"
+      />
       <!-- link="https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html"/> -->
       <!-- :link="aboutMePost" -->
     </div>
@@ -16,20 +26,20 @@
 </template>
 
 <script>
-import { getiframes,formatHtml } from '../helpers'
-import LinkCard from '../components/LinkCard.vue'
-import VideoFrame from '../components/VideoFrame.vue'
+import { getiframes, formatHtml } from "../helpers";
+import LinkCard from "../components/LinkCard.vue";
+import VideoFrame from "../components/VideoFrame.vue";
 export default {
   name: "ViewBlog",
-  components: { 
+  components: {
     LinkCard,
-    VideoFrame 
+    VideoFrame,
   },
   data() {
     return {
       currentBlog: null,
-      blogHtml: '',
-      videos:null,
+      blogHtml: "",
+      videos: [],
     };
   },
   async mounted() {
@@ -37,8 +47,8 @@ export default {
       return post.blogID === this.$route.params.blogid;
     });
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
-    this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo)
-    
+    this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo);
+
     // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
     // .then(() => {
     //   console.log('Done')
@@ -84,10 +94,8 @@ export default {
   //   }
   // }
 
-  
   a.esv-crossref-link {
     color: #72abbf !important;
   }
 }
-
 </style>

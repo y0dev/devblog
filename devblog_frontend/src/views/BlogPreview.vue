@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       blogHtml: '',
-      videos:null,
+      videos:[],
     }
   },
   async mounted() {
@@ -69,6 +69,16 @@ export default {
 
   .list li {
     margin: 20px 0;
+  }
+
+  .list {
+    margin: 20px;
+    padding: 20px 40px;
+    .sub-list {
+      margin: 0;
+      padding: 0 40px;
+    }
+
   }
 
   // .video-view {
