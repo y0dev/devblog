@@ -76,6 +76,10 @@ export default {
   margin: 0 auto;
 }
 
+p,ol,ul {
+  font-size: clamp(13px,2vw,1.1em);
+}
+
 ul{
   padding: 20px 40px;
 }

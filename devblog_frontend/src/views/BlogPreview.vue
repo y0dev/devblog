@@ -59,7 +59,7 @@ export default {
   h2 {
     margin-bottom: 16px;
     font-weight: 300;
-    font-size: 32px;
+    font-size: clamp(20px,32px,35px);;
   }
 
   img {
@@ -68,7 +68,7 @@ export default {
   }
 
   .list li {
-    margin: 20px 0;
+    margin: 10px 0;
   }
 
   .list {
@@ -76,25 +76,25 @@ export default {
     padding: 20px 40px;
     .sub-list {
       margin: 0;
-      padding: 0 40px;
+      padding: 0 20px 0 40px;
+      font-size: clamp(10px,14px,1em);
     }
-
   }
 
-  // .video-view {
-  //   position:relative;
-  //   padding:56.25% 0 0 0;
+  .link-card {
+    display: none;
+  }
+  @media only screen and (max-width: 500px) {
+    .list {
+      padding: 0;
+    }
+  }
+  @media only screen and (max-width: 720px) {
+    .link-card {
+      display: flex;
+    }
+  }
 
-  //   iframe {
-  //       position:absolute;
-  //       top:0;
-  //       left:0;
-  //       width:100%;
-  //       height:100%;
-  //   }
-  // }
-
-  
   a.esv-crossref-link {
     color: #72abbf !important;
   }

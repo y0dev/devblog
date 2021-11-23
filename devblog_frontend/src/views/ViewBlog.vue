@@ -48,7 +48,6 @@ export default {
     });
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
     this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo);
-
     // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
     // .then(() => {
     //   console.log('Done')
@@ -56,9 +55,17 @@ export default {
     // .catch(() => {
     //   console.log('Failed')
     // });
-    // let esvScript = document.createElement('script')
-    // esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js')
-    // document.body.appendChild(esvScript)
+    let esvScript = document.createElement('script')
+    esvScript.setAttribute('src', 'https://static.esvmedia.org/crossref/crossref.min.js?ver=5.8.2');
+    esvScript.setAttribute('id', 'esv-crossreference-tool-js');
+    document.body.appendChild(esvScript)
+
+    
+      window.dispatchEvent(new Event('esv-crossref.trigger-linkify'));
+  },
+
+  destroyed() {
+    document.removeChild()
   },
 };
 </script>
@@ -70,29 +77,6 @@ export default {
     font-size: 14px;
     margin-bottom: 24px;
   }
-
-  .link-card {
-    display: none;
-  }
-
-  @media only screen and (max-width: 720px) {
-    .link-card {
-      display: flex;
-    }
-  }
-
-  // .video-view {
-  //   position:relative;
-  //   padding:56.25% 0 0 0;
-
-  //   iframe {
-  //       position:absolute;
-  //       top:0;
-  //       left:0;
-  //       width:100%;
-  //       height:100%;
-  //   }
-  // }
 
   a.esv-crossref-link {
     color: #72abbf !important;
