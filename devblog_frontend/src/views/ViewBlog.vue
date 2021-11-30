@@ -46,6 +46,7 @@ export default {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
       return post.blogID === this.$route.params.blogid;
     });
+    console.log('some');
     this.videos = await getiframes(this.currentBlog[0].blogInfo);
     this.blogHtml = await formatHtml(this.currentBlog[0].blogInfo);
     // this.$loadScript("https://static.esvmedia.org/crossref/crossref.min.js")
