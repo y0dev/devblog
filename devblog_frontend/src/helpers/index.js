@@ -107,17 +107,22 @@ const formatHtml = (html) => {
 
         const ol = dom('ol');
         ol.addClass('list');
-
+        
         dom('li').append('<ol class="sub-list" type="i"></ol>');
         const items = dom('li');
         for (const li of items) {
-            if(li.next) {
+            if (li.next) {
+                // Remove children of node without attributes
                 if((isEmptyObject(li.next.attribs) && isEmptyObject(li.attribs)) || (!isEmptyObject(li.attribs))) {
                     li.children.pop();
                 } else {
+                    // add attribute to previous node in list
                     while (!isEmptyObject(li.next.attribs)) {
                         li.children[1].children.push(li.next);
+                        console.log(li.next);
                         dom(li.next).remove();
+                        // make sure there is a next before checking the attribute
+                        if (!li.next) break;
                     }
                 }
             }

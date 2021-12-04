@@ -85,7 +85,7 @@ img {
     border-right: 2px double #363636;
     padding: 0;
     margin: 0;
-    object-fit: fill;
+    object-fit: cover;
 }
 
 
@@ -102,11 +102,12 @@ img {
     .description {
         // background-color: blue;
         grid-column: 1 / span 2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         .sm{
             font-size: 11px;
+            width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
     .url-link {
